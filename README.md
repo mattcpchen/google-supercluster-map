@@ -3,6 +3,7 @@ If you want to use Google Maps within your react project, [google-map-react](htt
 
 ### Project structure:
 This project is a collection of the features I find while implementing supercluster in my react project. The main component is called `GoogleSuperCluster`. If you need to know how to implement supercluster in your react project, you can check them out [here](/src/components/GoogleSuperCluster/). `Pin` and `Circle` are used as my default markers. There are also 2 Component helper files located [here](/src/components/GSCMarkers/)if you wanna customize them.
+
 I first create 10 small examples which can be seen in the [`examples`](/src/examples/) section. Those files are created in React Storybook. I took 4 of them and extend them to be a demo project. Feel free to clone this repo if you need to know how to use supercluster.
 
 ### Demo:
