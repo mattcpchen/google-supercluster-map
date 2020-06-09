@@ -14,7 +14,7 @@ Some screenshots from this project:
 ![readme_03](/public/doc/readme_03.jpg?raw=true)
 ![readme_04](/public/doc/readme_04.jpg?raw=true)
 
-### Getting Started
+### Getting Started:
 <ul>
     <li><b>npm run dev</b>: run development version</li>
     <li><b>npm run storybook</b>: only for developing components</li>
