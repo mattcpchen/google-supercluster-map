@@ -1,10 +1,8 @@
 ## Google-Supercluster-Map
 Use google-map-react and supercluster to build your own google map with clustering features.
 
-![Screenshot_01](/public/doc/readme_01.jpg?raw=true)
-![Screenshot_02](/public/doc/readme_02.jpg?raw=true)
-![Screenshot_03](/public/doc/readme_03.jpg?raw=true)
-![Screenshot_04](/public/doc/readme_04.jpg?raw=true)
+![cut_01](https://user-images.githubusercontent.com/11477916/84105844-89a43100-a9e7-11ea-8464-0ec526d57d2d.jpg)
+![cut_04](https://user-images.githubusercontent.com/11477916/84105935-c5d79180-a9e7-11ea-9c82-850d2d04cdf1.jpg)
 
 <p>https://google-supercluster-map.herokuapp.com/</p>
 
