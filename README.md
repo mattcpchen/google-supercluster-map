@@ -5,9 +5,10 @@ This project is a collection of all features I find while implementing superclus
 
 
 Some screenshots from this project:
-![readme_02](https://user-images.githubusercontent.com/11477916/84107318-4f3c9300-a9eb-11ea-949e-e2adf73823c1.jpg)
-![readme_03](https://user-images.githubusercontent.com/11477916/84107331-595e9180-a9eb-11ea-82e6-74c9fc6724ea.jpg)
-![readme_04](https://user-images.githubusercontent.com/11477916/84106924-662eb580-a9ea-11ea-9053-5ac6192ded47.jpg)
+![readme_01](/public/doc/readme_01.jpg?raw=true)
+![readme_02](/public/doc/readme_02.jpg?raw=true)
+![readme_03](/public/doc/readme_03.jpg?raw=true)
+![readme_04](/public/doc/readme_04.jpg?raw=true)
 
 ## Getting Started
 <ul>
