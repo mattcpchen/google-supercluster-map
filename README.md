@@ -1,10 +1,13 @@
 ## Google-Supercluster-Map
-Use google-map-react and supercluster to build your own google map with clustering features.
+If you want to use Google Maps within your react project, [google-map-react](https://www.npmjs.com/package/google-map-react) is a great tool. However, if you have to display hundreds of thousands of points on a map, it becomes a problem. Rendering points into meaningful clusters with some usefully information for each cluster might fit for this purpose. [use-supercluster](https://www.npmjs.com/package/use-supercluster) works pretty well with google-map-react. Witht the help of the map/reduce features it provides, we can even adjust the style of the clusters and turn them into a heatmap.
 
-![cut_01](https://user-images.githubusercontent.com/11477916/84105844-89a43100-a9e7-11ea-8464-0ec526d57d2d.jpg)
-![cut_04](https://user-images.githubusercontent.com/11477916/84105935-c5d79180-a9e7-11ea-9c82-850d2d04cdf1.jpg)
+This project is a collection of all features I find while implementing supercluster to my react project. I first create 10 small examples which can be seen in the `examples` section. Those files are created in React Storybook. I took 4 of them and extend them to be a demo project. Feel free to clone this repo if you need to know how to use supercluster. Demo can be seen [HERE](https://google-supercluster-map.herokuapp.com/).
 
-<p>https://google-supercluster-map.herokuapp.com/</p>
+
+Some screenshots from this project:
+![readme_02](https://user-images.githubusercontent.com/11477916/84107318-4f3c9300-a9eb-11ea-949e-e2adf73823c1.jpg)
+![readme_03](https://user-images.githubusercontent.com/11477916/84107331-595e9180-a9eb-11ea-82e6-74c9fc6724ea.jpg)
+![readme_04](https://user-images.githubusercontent.com/11477916/84106924-662eb580-a9ea-11ea-9053-5ac6192ded47.jpg)
 
 ## Getting Started
 <ul>
