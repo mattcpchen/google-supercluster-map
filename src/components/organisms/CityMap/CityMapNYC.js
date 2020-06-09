@@ -29,10 +29,9 @@ const ColorBallMarker = styled(ClusterMarker)`
 
 const CityMapNYC = ({hotels, isZoomOut, params}) => {
   const normalColor = '#007aff'
-  const cheapColor = '#007aff'
-  const glowingColor = '#c00'
   const normalGlowing = '0 0 1px 1px #ffffff'
-  const cheapGlowing = `0 0 5px 5px ${glowingColor}`
+  const cheapColor = '#c00'
+  const cheapGlowing = `0 0 1px 3px #c00`
   const pointMarkerSize = 48
   const clusterOffSize = 48
 
@@ -59,7 +58,7 @@ const CityMapNYC = ({hotels, isZoomOut, params}) => {
       <PointMarkerWrapper key={hotel.hotelID} lat={latitude} lng={longitude}>
         <Marker
           size={pointMarkerSize}
-          color={isCheapest ? glowingColor : normalColor}
+          color={isCheapest ? cheapColor : normalColor}
           style={{ transform: 'translate(-50%, -100%)' }}
         />
       </PointMarkerWrapper>
@@ -84,10 +83,10 @@ const CityMapNYC = ({hotels, isZoomOut, params}) => {
 
     const isCheapest = clusterMinPrice === totalMinPrice
     const clusterSize = isCheapest ? clusterOnSize : clusterOffSize
-    const clusterColor = isCheapest ? cheapColor : normalColor
+    const clusterColor = normalColor
     const clusterGlowing = isCheapest ? cheapGlowing : normalGlowing
     let clusterTitle = isCheapest
-      ? `Cheapest + ${clusterPointsCount-1} more ${clusterPointsCount === 2 ? 'hotel' : 'hotels'}`
+      ? `Cheapest + ${clusterPointsCount-1} more`
       : `${clusterPointsCount} Hotels`
     let clusterSubtitle = `from ${minDisplayPrice}`
     if (clusterPointsCount === totalPointsCount) {

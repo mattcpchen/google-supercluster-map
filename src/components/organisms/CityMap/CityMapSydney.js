@@ -2,11 +2,11 @@ import React from 'react'
 import PropTypes from "prop-types";
 import GoogleSuperCluster from '../../GoogleSuperCluster'
 import { PointMarkerWrapper } from '../../GSCMarkers'
-import { getCenterPoint, getRandomPoint } from "./_helpers"
+import { getRandomPoint } from "./_helpers"
 import { SingleOccupancy, MultiOccupancy } from 'pcln-icons'
 
 
-const CityMapSydney = ({hotels, defaultZoom, isZoomOut, params}) => {
+const CityMapSydney = ({ hotels, defaultZoom, isZoomOut }) => {
   const colors = []
   .concat(['#049', '#f06f20', '#c00', '#060'])
   .concat(['#007aff', '#f68013', '#fe3e81', '#0a0'])
@@ -40,6 +40,9 @@ const CityMapSydney = ({hotels, defaultZoom, isZoomOut, params}) => {
   const mapCallbackFn = () => { /** do something here if necessary */};
 
   return (
+    /**
+     * Sydney is working as regular Google-Map-React without clustering
+     */
     <GoogleSuperCluster
       defaultZoom={defaultZoom}
       center={center}

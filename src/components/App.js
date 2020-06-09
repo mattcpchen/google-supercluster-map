@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Box, Flex } from 'pcln-design-system'
-import Header from "./organisms/Header"
-import Footer from "./organisms/Footer"
+import Header from './organisms/Header'
 import sydneyHotels from '../data/hotels_sydney'
 import nycHotels from "../data/hotels_nyc"
 import taipeiHotels from "../data/hotels_taipei"
@@ -13,32 +12,24 @@ import CityMapTaipei from './organisms/CityMap/CityMapTaipei'
 import CityMapParis from './organisms/CityMap/CityMapParis'
 
 
-const AppContainer = styled.div`
-  height: 87vh;
-  margin-top: 3vh;
-`
-
-const AppPanel = styled(Flex)`
+const AppHolder = styled(Flex)`
   box-shadow:
     rgba(0, 0, 0, 0.08) 0px 0px 2px 0px,
     rgba(0, 0, 0, 0.16) 0px 8px 32px 0px;
   padding: 12px 34px 24px 34px;
   margin: 0 auto;
+  height: 78vh;
+  margin-top: 35px;
   max-width: 880px;
+  padding: 0 30px 30px 30px;
   border-radius: 24px;
-  height: 90%;
 `
 
-const AppController = styled(Footer)`
-  margin-top: 20px;
+const StyledHeader = styled(Header)`
+  height: 80px;
 `
 
-const PanelHeader = styled(Header)`
-  min-height: 35px;
-  margin-bottom: 8px;
-`
-
-const PanelMap = styled(Box)`
+const CityMapHolder = styled(Box)`
   position: relative;
   width: 100%;
   height: 100%;
@@ -54,8 +45,12 @@ const pickWithRandomTotal = (array, total)=> {
   return array.slice(0, finalTotal)
 }
 
+const pickRandomCity = () => {
+  return Math.floor(Math.random()*4)
+}
+
 const App = () => {
-  const [city, updateCity] = useState(0)
+  const [city, updateCity] = useState(pickRandomCity())
 
   const handleUpdateCity = (dir) => {
     const total = 4
@@ -77,18 +72,21 @@ const App = () => {
   const cityHotels = pickWithRandomTotal(allCityHotels[city], allCityCounts[city])
 
   return (
-    <AppContainer>
-      <AppPanel flexDirection='column'>
-        <PanelHeader city={city} />
-        <PanelMap>
-          <CityMap hotels={cityHotels} />
-        </PanelMap>
-      </AppPanel>
-      <AppController
+    <AppHolder
+      flexDirection='column'
+      alignItems='center'
+    >
+
+      <StyledHeader
         city={city}
         handleUpdateCity={handleUpdateCity}
       />
-    </AppContainer>
+
+      <CityMapHolder>
+        <CityMap hotels={cityHotels} />
+      </CityMapHolder>
+
+    </AppHolder>
   )
 }
 
