@@ -40,7 +40,7 @@ storiesOf('GoogleSuperCluster', module)
     const cheapest = 100 // my original setting
     const hotels = multiMockHotels.slice(0, 7)
     const center = {lat: hotels[0].latitude, lng: hotels[0].longitude}
-    const childrenItems = hotels.map((hotel, index) => ({
+    const childrenItems = hotels.map(hotel => ({
       longitude: hotel.longitude,
       latitude: hotel.latitude,
       hotelId: hotel.hotelId,

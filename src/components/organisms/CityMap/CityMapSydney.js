@@ -1,22 +1,22 @@
 import React from 'react'
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types'
 import GoogleSuperCluster from '../../GoogleSuperCluster'
 import { PointMarkerWrapper } from '../../GSCMarkers'
-import { getRandomPoint } from "./_helpers"
+import { getRandomPoint } from './_helpers'
 import { SingleOccupancy, MultiOccupancy } from 'pcln-icons'
-
 
 const CityMapSydney = ({ hotels, defaultZoom, isZoomOut }) => {
   const colors = []
-  .concat(['#049', '#f06f20', '#c00', '#060'])
-  .concat(['#007aff', '#f68013', '#fe3e81', '#0a0'])
-  .concat(['#4f6f8f'])
-  const color = colors[Math.floor(Math.random()*colors.length)]
+    .concat(['#049', '#f06f20', '#c00', '#060'])
+    .concat(['#007aff', '#f68013', '#fe3e81', '#0a0'])
+    .concat(['#4f6f8f'])
+  const color = colors[Math.floor(Math.random() * colors.length)]
 
   const mapChildern = hotels.map(hotel => {
     const latitude = hotel.location.latitude
     const longitude = hotel.location.longitude
-    const Marker = Math.floor(Math.random()*5) === 0 ? MultiOccupancy : SingleOccupancy
+    const Marker =
+      Math.floor(Math.random() * 5) === 0 ? MultiOccupancy : SingleOccupancy
     return (
       <PointMarkerWrapper key={latitude} lat={latitude} lng={longitude}>
         <Marker
@@ -32,12 +32,14 @@ const CityMapSydney = ({ hotels, defaultZoom, isZoomOut }) => {
 
   const coordinatesArray = isZoomOut
     ? hotels.map(hotel => ({
-      lat: hotel.location.latitude,
-      lng: hotel.location.longitude
-    }))
+        lat: hotel.location.latitude,
+        lng: hotel.location.longitude,
+      }))
     : null
 
-  const mapCallbackFn = () => { /** do something here if necessary */};
+  const mapCallbackFn = () => {
+    /** do something here if necessary */
+  }
 
   return (
     /**
@@ -47,7 +49,7 @@ const CityMapSydney = ({ hotels, defaultZoom, isZoomOut }) => {
       defaultZoom={defaultZoom}
       center={center}
       mapCallbackFn={mapCallbackFn}
-      params={{coordinatesArray}}
+      params={{ coordinatesArray }}
       options={{
         clickableIcons: false,
         scrollwheel: false,
@@ -65,7 +67,8 @@ CityMapSydney.propTypes = {
   params: PropTypes.object,
   defaultZoom: PropTypes.number,
   isZoomOut: PropTypes.bool,
-};
+}
+
 CityMapSydney.defaultProps = {
   defaultZoom: 13,
   isZoomOut: false,

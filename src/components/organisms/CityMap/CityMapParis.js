@@ -1,45 +1,44 @@
 import React from 'react'
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import GoogleSuperCluster from '../../GoogleSuperCluster'
 import { PointMarkerWrapper, ClusterMarker } from '../../GSCMarkers'
-import { getRandomPoint } from "./_helpers"
+import { getRandomPoint } from './_helpers'
 import { User as Marker } from 'pcln-icons'
 
-
 const getRandomRGBColor = () => {
-  const rgb = Math.floor(Math.random() *3)
-  const rColor = rgb===0 ? 255 : 0
-  const gColor = rgb===1 ? 255 : 0
-  const bColor = rgb===2 ? 255 : 0
+  const rgb = Math.floor(Math.random() * 3)
+  const rColor = rgb === 0 ? 255 : 0
+  const gColor = rgb === 1 ? 255 : 0
+  const bColor = rgb === 2 ? 255 : 0
   return [rColor, gColor, bColor]
 }
 
-const mixAllRBGColors = (clusterPoints) => {
+const mixAllRBGColors = clusterPoints => {
   const totalPoints = clusterPoints.length
   const mixRGB = [0, 0, 0]
-  for(let i=0; i<clusterPoints.length; i++) {
+  for (let i = 0; i < clusterPoints.length; i++) {
     const thisRGB = clusterPoints[i].rgbColor
-    mixRGB[0] += thisRGB[0];
-    mixRGB[1] += thisRGB[1];
-    mixRGB[2] += thisRGB[2];
+    mixRGB[0] += thisRGB[0]
+    mixRGB[1] += thisRGB[1]
+    mixRGB[2] += thisRGB[2]
   }
-  return mixRGB.map(color => Math.floor(color/totalPoints))
+  return mixRGB.map(color => Math.floor(color / totalPoints))
 }
 
 const ColorBallMarker = styled(ClusterMarker)`
   border: 0;
 `
 
-const CityMapParis = ({hotels, isZoomOut, params}) => {
+const CityMapParis = ({ hotels, isZoomOut }) => {
   const pointMarkerSize = 52
   // basic setting
   const center = getRandomPoint(hotels)
   const coordinatesArray = isZoomOut
     ? hotels.map(hotel => ({
-      lat: hotel.location.latitude,
-      lng: hotel.location.longitude
-    }))
+        lat: hotel.location.latitude,
+        lng: hotel.location.longitude,
+      }))
     : null
 
   // for childrenItems
@@ -56,17 +55,18 @@ const CityMapParis = ({hotels, isZoomOut, params}) => {
         />
       </PointMarkerWrapper>
     )
-    return ({
+    return {
       hotelId: hotel.hotelID,
       hotelName: hotel.name,
       rgbColor,
       latitude,
       longitude,
-      PointMarker
-    })})
+      PointMarker,
+    }
+  })
 
   // for callback
-  const clusterCallback = ({ totalPointsCount, clusterPoints}) => {
+  const clusterCallback = ({ totalPointsCount, clusterPoints }) => {
     const clusterPointsCount = clusterPoints.length
     const mixRGB = mixAllRBGColors(clusterPoints)
     const clusterSize = 45 + (clusterPointsCount / totalPointsCount) * 40
@@ -74,7 +74,13 @@ const CityMapParis = ({hotels, isZoomOut, params}) => {
     const clusterGlowing = `0 0 5px 5px rgb(${mixRGB[0]},${mixRGB[1]},${mixRGB[2]})`
     const clusterTitle = `${mixRGB[0]}|${mixRGB[1]}|${mixRGB[2]}`
     const clusterSubtitle = `${clusterPointsCount} Souls`
-    return { clusterSize, clusterColor, clusterGlowing, clusterTitle, clusterSubtitle }
+    return {
+      clusterSize,
+      clusterColor,
+      clusterGlowing,
+      clusterTitle,
+      clusterSubtitle,
+    }
   }
 
   return (
@@ -88,7 +94,7 @@ const CityMapParis = ({hotels, isZoomOut, params}) => {
         titleSize: 12,
         subtitleSize: 12,
       }}
-      params={{coordinatesArray}}
+      params={{ coordinatesArray }}
       options={{
         clickableIcons: false,
         scrollwheel: false,
@@ -103,7 +109,8 @@ CityMapParis.propTypes = {
   hotels: PropTypes.arrayOf(PropTypes.object),
   params: PropTypes.object,
   isZoomOut: PropTypes.bool,
-};
+}
+
 CityMapParis.defaultProps = {
   isZoomOut: true,
 }

@@ -1,22 +1,22 @@
 import React from 'react'
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types'
 import GoogleSuperCluster from '../../GoogleSuperCluster'
-import {ClusterMarker, PointMarkerWrapper} from '../../GSCMarkers'
-import { getRandomPoint } from "./_helpers"
+import { ClusterMarker, PointMarkerWrapper } from '../../GSCMarkers'
+import { getRandomPoint } from './_helpers'
 import { HotelCircle, Discount } from 'pcln-icons'
-import styled from "styled-components";
+import styled from 'styled-components'
 
-const findTotalMinPrice = (hotels) => {
+const findTotalMinPrice = hotels => {
   let minPrice = Number.MAX_VALUE
-  for(let i=0; i<hotels.length; i++) {
+  for (let i = 0; i < hotels.length; i++) {
     const hotelPrice = Math.floor(hotels[i].ratesSummary.minPrice)
     minPrice = Math.min(minPrice, hotelPrice)
   }
   return minPrice
 }
-const findClusterMinPrice = (points) => {
+const findClusterMinPrice = points => {
   let minPrice = Number.MAX_VALUE
-  for(let i=0; i<points.length; i++) {
+  for (let i = 0; i < points.length; i++) {
     const hotelPrice = Math.floor(points[i].hotelPrice)
     minPrice = Math.min(minPrice, hotelPrice)
   }
@@ -27,7 +27,7 @@ const ColorBallMarker = styled(ClusterMarker)`
   border: 0;
 `
 
-const CityMapNYC = ({hotels, isZoomOut, params}) => {
+const CityMapNYC = ({ hotels, isZoomOut }) => {
   const normalColor = '#007aff'
   const normalGlowing = '0 0 1px 1px #ffffff'
   const cheapColor = '#c00'
@@ -40,9 +40,9 @@ const CityMapNYC = ({hotels, isZoomOut, params}) => {
 
   const coordinatesArray = isZoomOut
     ? hotels.map(hotel => ({
-      lat: hotel.location.latitude,
-      lng: hotel.location.longitude
-    }))
+        lat: hotel.location.latitude,
+        lng: hotel.location.longitude,
+      }))
     : null
 
   // for childrenItems
@@ -63,20 +63,22 @@ const CityMapNYC = ({hotels, isZoomOut, params}) => {
         />
       </PointMarkerWrapper>
     )
-    return ({
+    return {
       hotelId: hotel.hotelID,
       hotelName: hotel.name,
       currencySymbol: currencySymbol,
       hotelPrice: hotelPrice,
       latitude,
       longitude,
-      PointMarker
-    })})
+      PointMarker,
+    }
+  })
 
   // for clusterCallback
   const clusterCallback = ({ totalPointsCount, clusterPoints }) => {
     const clusterPointsCount = clusterPoints.length
-    const clusterOnSize = clusterOffSize + (clusterPointsCount / totalPointsCount) * 45
+    const clusterOnSize =
+      clusterOffSize + (clusterPointsCount / totalPointsCount) * 45
     const currencySymbol = clusterPoints[0].currencySymbol
     const clusterMinPrice = findClusterMinPrice(clusterPoints)
     const minDisplayPrice = `${currencySymbol}${clusterMinPrice}`
@@ -86,18 +88,26 @@ const CityMapNYC = ({hotels, isZoomOut, params}) => {
     const clusterColor = normalColor
     const clusterGlowing = isCheapest ? cheapGlowing : normalGlowing
     let clusterTitle = isCheapest
-      ? `Cheapest + ${clusterPointsCount-1} more`
+      ? `Cheapest + ${clusterPointsCount - 1} more`
       : `${clusterPointsCount} Hotels`
     let clusterSubtitle = `from ${minDisplayPrice}`
     if (clusterPointsCount === totalPointsCount) {
       clusterTitle = 'Welcome to NYC'
       clusterSubtitle = `${clusterPointsCount} Hotels from ${minDisplayPrice}`
     }
-    return { clusterSize, clusterColor, clusterGlowing, clusterTitle, clusterSubtitle }
+    return {
+      clusterSize,
+      clusterColor,
+      clusterGlowing,
+      clusterTitle,
+      clusterSubtitle,
+    }
   }
 
   // for mapCallbackFn
-  const mapCallbackFn = () => { /** do something here if necessary */};
+  const mapCallbackFn = () => {
+    /** do something here if necessary */
+  }
 
   return (
     <GoogleSuperCluster
@@ -111,7 +121,7 @@ const CityMapNYC = ({hotels, isZoomOut, params}) => {
         bgSize: clusterOffSize,
         subtitleSize: 10,
       }}
-      params={{coordinatesArray}}
+      params={{ coordinatesArray }}
       options={{
         clickableIcons: false,
         scrollwheel: false,
@@ -126,7 +136,8 @@ CityMapNYC.propTypes = {
   hotels: PropTypes.arrayOf(PropTypes.object),
   params: PropTypes.object,
   isZoomOut: PropTypes.bool,
-};
+}
+
 CityMapNYC.defaultProps = {
   isZoomOut: false,
 }

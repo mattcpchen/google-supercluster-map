@@ -4,7 +4,7 @@ const path = require('path');
 
 module.exports = function() {
   const app = express();
-  app.set('port', process.env.PORT || 8080); // test: 57358
+  app.set('port', process.env.PORT || 57358); // test: 57358
 
 
   // webpack with HMR

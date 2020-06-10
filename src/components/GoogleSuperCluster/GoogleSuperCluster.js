@@ -48,7 +48,6 @@ export const getClusters = ({
     }
   })
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   return useSupercluster({ points, bounds, zoom, options })
 }
 
@@ -174,7 +173,9 @@ const GoogleSuperCluster = ({
     <MapWrapper className={className}>
       <GoogleMapReact
         bootstrapURLKeys={{
-          key: `${GoogleApiKey}`
+          key: 'AIzaSyCBc99VuJdxwj5E9VQyo0dhD4YZRU_edOM',
+          channel: 'pclnHtlDetailComp',
+          // key: `${GoogleApiKey}`
         }}
         center={center}
         defaultCenter={defaultCenter}
@@ -193,17 +194,17 @@ const GoogleSuperCluster = ({
          */}
         {!isClustering && children
           ? React.Children.map(children, element => {
-            return React.cloneElement(element, {
-              elementref: childRefCallback,
+              return React.cloneElement(element, {
+                elementref: childRefCallback,
+              })
             })
-          })
           : null}
 
         {/** Google Map React with Supercluster */}
         {isClustering &&
           clusters &&
           clusters.map(cluster => {
-            const [longitude, latitude] = cluster.geometry.coordinates;
+            const [longitude, latitude] = cluster.geometry.coordinates
             const { PointMarker, cluster: isCluster } = cluster.properties
             return isCluster
               ? generateClusterMarker({

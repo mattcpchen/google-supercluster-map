@@ -5,6 +5,7 @@ import { multiMockHotels } from './helpers/mockData'
 import { Twitter } from 'pcln-icons'
 import GoogleSuperCluster from '../components/GoogleSuperCluster'
 
+// eslint-disable-next-line react/prop-types
 const MarkerWrapper = ({ elementref, children }) => (
   <div
     ref={elementref}
@@ -40,7 +41,7 @@ storiesOf('GoogleSuperCluster', module)
   const selectedPool = hotels.map(hotel => hotel.hotelId)
   const selectedId = selectedPool[Math.floor(Math.random()*selectedPool.length)]
   const center = {lat: hotels[0].latitude, lng: hotels[0].longitude}
-  const childrenItems = hotels.map((hotel, index) => ({
+  const childrenItems = hotels.map(hotel => ({
     longitude: hotel.longitude,
     latitude: hotel.latitude,
     hotelId: hotel.hotelId,

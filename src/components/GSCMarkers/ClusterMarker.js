@@ -1,4 +1,3 @@
-import { Box } from 'pcln-design-system'
 import styled from 'styled-components'
 
 /**

@@ -1,8 +1,4 @@
 import PointMarkerWrapper from './PointMarkerWrapper'
 import ClusterMarker from './ClusterMarker'
 
-
-export {
-  PointMarkerWrapper,
-  ClusterMarker,
-}
+export { PointMarkerWrapper, ClusterMarker }

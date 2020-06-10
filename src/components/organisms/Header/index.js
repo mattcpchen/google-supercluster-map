@@ -1,2 +1,2 @@
 import Headerter from './Headerter'
-export default Headerter;
+export default Headerter
