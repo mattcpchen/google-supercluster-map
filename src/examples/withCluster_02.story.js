@@ -5,6 +5,7 @@ import { multiMockHotels } from './helpers/mockData'
 import { FlightCircle } from 'pcln-icons'
 import GoogleSuperCluster from '../components/GoogleSuperCluster'
 
+// eslint-disable-next-line react/prop-types
 const MarkerWrapper = ({ elementref, children }) => (
   <div
     ref={elementref}
@@ -31,25 +32,24 @@ const generatePointMarker = (lat, lng) => (
   </MarkerWrapper>
 )
 
-storiesOf('GoogleSuperCluster', module)
-  .add('customize PointMarker', () => {
-    const hotels = multiMockHotels.slice(0, 5)
-    const center = {lat: hotels[0].latitude, lng: hotels[0].longitude}
-    const childrenItems = hotels.map(hotel => ({
-      longitude: hotel.longitude,
-      latitude: hotel.latitude,
-      PointMarker: generatePointMarker(hotel.latitude, hotel.longitude)
-    }))
+storiesOf('GoogleSuperCluster', module).add('customize PointMarker', () => {
+  const hotels = multiMockHotels.slice(0, 5)
+  const center = { lat: hotels[0].latitude, lng: hotels[0].longitude }
+  const childrenItems = hotels.map(hotel => ({
+    longitude: hotel.longitude,
+    latitude: hotel.latitude,
+    PointMarker: generatePointMarker(hotel.latitude, hotel.longitude)
+  }))
 
-    return (
-      <div style={{ height: '500px' }}>
-        <GoogleSuperCluster
-          isClustering
-          childrenItems={childrenItems}
-          center={center}
-          mapCallbackFn={action(`call mapCallbackFn`)}
-          options={{ clickableIcons: false }}
-        />
-      </div>
-    )
-  })
+  return (
+    <div style={{ height: '500px' }}>
+      <GoogleSuperCluster
+        isClustering
+        childrenItems={childrenItems}
+        center={center}
+        mapCallbackFn={action(`call mapCallbackFn`)}
+        options={{ clickableIcons: false }}
+      />
+    </div>
+  )
+})

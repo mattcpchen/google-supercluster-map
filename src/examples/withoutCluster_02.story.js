@@ -33,8 +33,9 @@ const renderZone = (maps, zoneCoords) => {
   })
 }
 
-storiesOf('GoogleMapReact', module)
-  .add('PolygonZone only', () => {
+storiesOf('GSC without Clustering Markers', module).add(
+  'PolygonZone only',
+  () => {
     const mapCallbackFn = (map, maps) => {
       const { zoneCoords } = hotelData
       const polygonZone = renderZone(maps, zoneCoords)
@@ -59,4 +60,5 @@ storiesOf('GoogleMapReact', module)
         <GoogleSuperCluster {...props} />
       </div>
     )
-  })
+  }
+)

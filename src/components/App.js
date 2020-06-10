@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { Box, Flex } from 'pcln-design-system'
-import Header from './organisms/Header'
 import sydneyHotels from '../data/hotels_sydney'
 import nycHotels from '../data/hotels_nyc'
 import taipeiHotels from '../data/hotels_taipei'
 import parisHotels from '../data/hotels_paris'
+import Header from './organisms/Header'
 import CityMapSydney from './organisms/CityMap/CityMapSydney'
 import CityMapNYC from './organisms/CityMap/CityMapNYC'
 import CityMapTaipei from './organisms/CityMap/CityMapTaipei'
@@ -61,7 +62,6 @@ const App = () => {
     }
   }
 
-  const GoogleApiKey = 'AIzaSyD2Zt3b8xGZVVqu3751QhKlm93v3FasoL8'
   const allCityMaps = [CityMapSydney, CityMapNYC, CityMapTaipei, CityMapParis]
   const allCityHotels = [sydneyHotels, nycHotels, taipeiHotels, parisHotels]
   const allCityCounts = [50, 20, 20, 35, 35]
@@ -72,26 +72,20 @@ const App = () => {
   )
 
   return (
-    <AppHolder
-      flexDirection='column'
-      alignItems='center'
-    >
-
-      <StyledHeader
-        city={city}
-        handleUpdateCity={handleUpdateCity}
-      />
-
+    <AppHolder flexDirection='column' alignItems='center'>
+      <StyledHeader city={city} handleUpdateCity={handleUpdateCity} />
       <CityMapHolder>
         <CityMap hotels={cityHotels} />
       </CityMapHolder>
-
     </AppHolder>
   )
 }
 
-
-App.propTypes = {}
-App.defaultProps = {}
+App.propTypes = {
+  GoogleApiKey: PropTypes.string,
+}
+App.defaultProps = {
+  GoogleApiKey: 'AIzaSyD2Zt3b8xGZVVqu3751QhKlm93v3FasoL8',
+}
 
 export default App

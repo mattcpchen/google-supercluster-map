@@ -1,4 +1,3 @@
-
 export const getCenterPoint = hotels => {
   const numberOfHotels = hotels.length
   let lats = 0
@@ -11,8 +10,7 @@ export const getCenterPoint = hotels => {
   return { lat: lats / numberOfHotels, lng: lngs / numberOfHotels }
 }
 
-
 export const getRandomPoint = hotels => {
-  const randHotel = hotels[Math.floor(Math.random()*hotels.length)]
+  const randHotel = hotels[Math.floor(Math.random() * hotels.length)]
   return getCenterPoint([randHotel])
 }

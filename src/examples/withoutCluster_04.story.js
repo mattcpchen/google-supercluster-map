@@ -4,6 +4,7 @@ import { multiMockHotels } from './helpers/mockData'
 import GoogleSuperCluster from '../components/GoogleSuperCluster'
 import { Pin } from 'pcln-icons'
 
+// eslint-disable-next-line react/prop-types
 const MarkerWrapper = ({ elementref, children }) => (
   <div
     ref={elementref}
@@ -19,13 +20,14 @@ const MarkerWrapper = ({ elementref, children }) => (
   </div>
 )
 
-storiesOf('GoogleMapReact', module)
-  .add('With several markers & markerWrapper', () => {
+storiesOf('GSC without Clustering Markers', module).add(
+  'With several markers & markerWrapper',
+  () => {
     const hotels = multiMockHotels
 
     const defaultCenter = {
       lat: hotels[0].latitude,
-      lng: hotels[0].longitude
+      lng: hotels[0].longitude,
     }
 
     const mapChildern = hotels.map(hotel => {
@@ -44,12 +46,10 @@ storiesOf('GoogleMapReact', module)
 
     return (
       <div style={{ height: '500px' }}>
-        <GoogleSuperCluster
-          center={defaultCenter}
-          defaultZoom={14}
-        >
+        <GoogleSuperCluster center={defaultCenter} defaultZoom={14}>
           {mapChildern}
         </GoogleSuperCluster>
       </div>
     )
-  })
+  }
+)

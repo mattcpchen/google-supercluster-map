@@ -5,6 +5,7 @@ import { multiMockHotels } from './helpers/mockData'
 import { HotelCircle } from 'pcln-icons'
 import GoogleSuperCluster from '../components/GoogleSuperCluster'
 
+// eslint-disable-next-line react/prop-types
 const MarkerWrapper = ({ elementref, children }) => (
   <div
     ref={elementref}
@@ -31,17 +32,18 @@ const generatePointMarker = (lat, lng) => (
   </MarkerWrapper>
 )
 
-storiesOf('GoogleSuperCluster', module)
-  .add('customize callbackFn - basic', () => {
+storiesOf('GoogleSuperCluster', module).add(
+  'customize callbackFn - basic',
+  () => {
     const hotels = multiMockHotels.slice(0, 7)
-    const center = {lat: hotels[0].latitude, lng: hotels[0].longitude}
-    const childrenItems = hotels.map((hotel, index) => ({
+    const center = { lat: hotels[0].latitude, lng: hotels[0].longitude }
+    const childrenItems = hotels.map(hotel => ({
       longitude: hotel.longitude,
       latitude: hotel.latitude,
       hotelId: hotel.hotelId,
       hotelName: hotel.hotelName,
       hotelPrice: hotel.hotelPrice,
-      PointMarker: generatePointMarker(hotel.latitude, hotel.longitude)
+      PointMarker: generatePointMarker(hotel.latitude, hotel.longitude),
     }))
 
     const clusterCallback = ({ totalPointsCount, clusterPoints }) => {
@@ -66,4 +68,5 @@ storiesOf('GoogleSuperCluster', module)
         />
       </div>
     )
-  })
+  }
+)

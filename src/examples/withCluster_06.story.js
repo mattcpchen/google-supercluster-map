@@ -5,6 +5,7 @@ import { multiMockHotels } from './helpers/mockData'
 import { HotelCircle, DollarCircle } from 'pcln-icons'
 import GoogleSuperCluster from '../components/GoogleSuperCluster'
 
+// eslint-disable-next-line react/prop-types
 const MarkerWrapper = ({ elementref, children }) => (
   <div
     ref={elementref}
@@ -31,15 +32,16 @@ const generatePointMarker = (Marker, color, lat, lng) => (
   </MarkerWrapper>
 )
 
-storiesOf('GoogleSuperCluster', module)
-  .add('customize callbackFn - advanced 2', () => {
+storiesOf('GoogleSuperCluster', module).add(
+  'customize callbackFn - advanced 2',
+  () => {
     /** this will utilize the value / maxValue / minValue features */
     const lightColor = '#007aff'
-    const darkColor= '#004499'
+    const darkColor = '#004499'
     const winnerColor = `#800`
     const cheapest = 100 // my original setting
     const hotels = multiMockHotels.slice(0, 7)
-    const center = {lat: hotels[0].latitude, lng: hotels[0].longitude}
+    const center = { lat: hotels[0].latitude, lng: hotels[0].longitude }
     const childrenItems = hotels.map(hotel => ({
       longitude: hotel.longitude,
       latitude: hotel.latitude,
@@ -53,20 +55,21 @@ storiesOf('GoogleSuperCluster', module)
         hotel.hotelPriceValue === cheapest ? winnerColor : lightColor,
         hotel.latitude,
         hotel.longitude
-      )
+      ),
     }))
 
     const clusterCallback = ({ totalPointsCount, clusterPoints }) => {
       const clusterPointsCount = clusterPoints.length
       const clusterSize = 45 + (clusterPointsCount / totalPointsCount) * 55
-      let isThisCheapest = false, thisCheapestVal = Number.MAX_VALUE
+      let isThisCheapest = false
+      let thisCheapestVal = Number.MAX_VALUE
       clusterPoints.forEach(point => {
         isThisCheapest = isThisCheapest || point.isCheapest
         thisCheapestVal = Math.min(thisCheapestVal, point.hotelPriceValue)
       })
       let clusterTitle, clusterSubtitle, clusterColor
       if (isThisCheapest) {
-        clusterTitle = `Cheapest + ${clusterPointsCount-1} More`
+        clusterTitle = `Cheapest + ${clusterPointsCount - 1} More`
         clusterSubtitle = `from $${thisCheapestVal}`
         clusterColor = winnerColor
       } else {
@@ -89,4 +92,5 @@ storiesOf('GoogleSuperCluster', module)
         />
       </div>
     )
-  })
+  }
+)

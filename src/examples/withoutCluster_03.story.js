@@ -32,9 +32,9 @@ const generateLatLong = (maps, lat, lon) => {
   return new maps.LatLng(lat, lon)
 }
 
-storiesOf('GoogleMapReact', module)
+storiesOf('GSC without Clustering Markers', module)
   .add('With one (legacy) marker', () => {
-    const hotels =multiMockHotels.slice(0,1)
+    const hotels = multiMockHotels.slice(0, 1)
     const mapCallbackFn = (map, maps) => {
       const greenIcon = renderIcon(maps, greenPath, greenFillColor)
       hotels.forEach(hotel => {
@@ -42,7 +42,7 @@ storiesOf('GoogleMapReact', module)
         renderMarker(maps, greenIcon, map, lat, lon, hotelName)
       })
     }
-    const defaultCenter = {lat: hotels[0].latitude, lng: hotels[0].longitude}
+    const defaultCenter = { lat: hotels[0].latitude, lng: hotels[0].longitude }
     return (
       <div style={{ height: '500px' }}>
         <GoogleSuperCluster
@@ -66,7 +66,7 @@ storiesOf('GoogleMapReact', module)
       })
       map.fitBounds(bound)
     }
-    const defaultCenter = {lat: hotels[0].latitude, lng: hotels[0].longitude}
+    const defaultCenter = { lat: hotels[0].latitude, lng: hotels[0].longitude }
     return (
       <div style={{ height: '500px' }}>
         <GoogleSuperCluster

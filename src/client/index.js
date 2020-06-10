@@ -1,13 +1,10 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from '../components/App';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import App from '../components/App'
 
-
-class Application extends React.Component{
-  render(){
-    return(
-      <App />
-    )
+class Application extends React.Component {
+  render() {
+    return <App />
   }
 }
 
