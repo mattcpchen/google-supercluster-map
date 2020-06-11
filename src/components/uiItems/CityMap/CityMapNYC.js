@@ -1,10 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import styled from 'styled-components'
 import GoogleSuperCluster from '../../GoogleSuperCluster'
 import { ClusterMarker, PointMarkerWrapper } from '../../GSCMarkers'
 import { getRandomPoint } from './_helpers'
 import { HotelCircle, Discount } from 'pcln-icons'
-import styled from 'styled-components'
 
 const findTotalMinPrice = hotels => {
   let minPrice = Number.MAX_VALUE

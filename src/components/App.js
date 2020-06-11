@@ -6,11 +6,11 @@ import sydneyHotels from '../data/hotels_sydney'
 import nycHotels from '../data/hotels_nyc'
 import taipeiHotels from '../data/hotels_taipei'
 import parisHotels from '../data/hotels_paris'
-import Header from './organisms/Header'
-import CityMapSydney from './organisms/CityMap/CityMapSydney'
-import CityMapNYC from './organisms/CityMap/CityMapNYC'
-import CityMapTaipei from './organisms/CityMap/CityMapTaipei'
-import CityMapParis from './organisms/CityMap/CityMapParis'
+import Header from './uiItems/Header'
+import CityMapSydney from './uiItems/CityMap/CityMapSydney'
+import CityMapNYC from './uiItems/CityMap/CityMapNYC'
+import CityMapTaipei from './uiItems/CityMap/CityMapTaipei'
+import CityMapParis from './uiItems/CityMap/CityMapParis'
 
 const AppHolder = styled(Flex)`
   box-shadow: rgba(0, 0, 0, 0.08) 0px 0px 2px 0px,

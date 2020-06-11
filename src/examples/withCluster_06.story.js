@@ -2,7 +2,7 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
 import { multiMockHotels } from './helpers/mockData'
-import { HotelCircle, DollarCircle } from 'pcln-icons'
+import { HotelCircle, Discount } from 'pcln-icons'
 import GoogleSuperCluster from '../components/GoogleSuperCluster'
 
 // eslint-disable-next-line react/prop-types
@@ -51,7 +51,7 @@ storiesOf('GoogleSuperCluster', module).add(
       hotelPriceValue: hotel.hotelPriceValue,
       isCheapest: hotel.hotelPriceValue === 100,
       PointMarker: generatePointMarker(
-        hotel.hotelPriceValue === cheapest ? DollarCircle : HotelCircle,
+        hotel.hotelPriceValue === cheapest ? Discount : HotelCircle,
         hotel.hotelPriceValue === cheapest ? winnerColor : lightColor,
         hotel.latitude,
         hotel.longitude
