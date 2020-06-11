@@ -53,11 +53,12 @@ export const getClusters = ({
 
 const GoogleSuperCluster = ({
   children,
-  GoogleApiKey,
+  GMApiKey,
   className,
   center,
   defaultCenter,
   defaultZoom,
+  zoom: initZoom,
   mapCallbackFn,
   options,
   params,
@@ -73,7 +74,7 @@ const GoogleSuperCluster = ({
   let map = null
   const initialItems = []
   const [bounds, setBounds] = useState(null)
-  const [zoom, setZoom] = useState(defaultZoom)
+  const [zoom, setZoom] = useState(initZoom)
 
   // componentDidUpdate
   const getPrevPropValue = value => {
@@ -173,8 +174,7 @@ const GoogleSuperCluster = ({
     <MapWrapper className={className}>
       <GoogleMapReact
         bootstrapURLKeys={{
-          // key: 'AIzaSyCBc99VuJdxwj5E9VQyo0dhD4YZRU_edOM',
-          key: `${GoogleApiKey}`,
+          key: `${GMApiKey}`,
         }}
         center={center}
         defaultCenter={defaultCenter}
@@ -184,7 +184,7 @@ const GoogleSuperCluster = ({
         }
         options={handleMapOption}
         yesIWantToUseGoogleMapApiInternals
-        zoom={zoom}
+        zoom={initZoom}
         onChange={({ zoom, bounds }) => handleClusterMapChanged(zoom, bounds)}
       >
         {/**
@@ -230,7 +230,7 @@ const GoogleSuperCluster = ({
 }
 
 GoogleSuperCluster.propTypes = {
-  GoogleApiKey: PropTypes.string,
+  GMApiKey: PropTypes.string,
   center: PropTypes.shape({
     lat: PropTypes.number,
     lng: PropTypes.number,
@@ -274,7 +274,7 @@ GoogleSuperCluster.defaultProps = {
   defaultZoom: 14,
   params: {},
   refitOnCoordsChange: false,
-  GoogleApiKey: 'AIzaSyD2Zt3b8xGZVVqu3751QhKlm93v3FasoL8',
+  GMApiKey: 'AIzaSyD2Zt3b8xGZVVqu3751QhKlm93v3FasoL8',
 }
 
 export default GoogleSuperCluster
