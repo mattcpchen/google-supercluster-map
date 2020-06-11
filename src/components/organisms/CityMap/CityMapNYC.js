@@ -45,9 +45,9 @@ const CityMapNYC = ({ hotels, isZoomOut }) => {
       }))
     : null
 
-  // for childrenItems
+  // for childItems
   const totalMinPrice = findTotalMinPrice(hotels)
-  const childrenItems = hotels.map(hotel => {
+  const childItems = hotels.map(hotel => {
     const currencySymbol = hotel.ratesSummary.minCurrencyCodeSymbol
     const hotelPrice = Math.floor(hotel.ratesSummary.minPrice)
     const latitude = hotel.location.latitude
@@ -112,7 +112,7 @@ const CityMapNYC = ({ hotels, isZoomOut }) => {
   return (
     <GoogleSuperCluster
       isClustering
-      childrenItems={childrenItems}
+      childItems={childItems}
       center={center}
       mapCallbackFn={mapCallbackFn}
       clusterCallback={clusterCallback}

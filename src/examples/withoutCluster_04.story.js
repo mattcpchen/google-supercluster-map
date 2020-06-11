@@ -5,9 +5,8 @@ import GoogleSuperCluster from '../components/GoogleSuperCluster'
 import { Pin } from 'pcln-icons'
 
 // eslint-disable-next-line react/prop-types
-const MarkerWrapper = ({ elementref, children }) => (
+const MarkerWrapper = ({ children }) => (
   <div
-    ref={elementref}
     style={{
       left: '0',
       top: '0',
@@ -20,8 +19,9 @@ const MarkerWrapper = ({ elementref, children }) => (
   </div>
 )
 
+
 storiesOf('GSC without Clustering Markers', module).add(
-  'With several markers & markerWrapper',
+  'With several markers (thru children)',
   () => {
     const hotels = multiMockHotels
 
@@ -30,6 +30,9 @@ storiesOf('GSC without Clustering Markers', module).add(
       lng: hotels[0].longitude,
     }
 
+    /**
+     * pre-generated marker and pass thru children
+     */
     const mapChildern = hotels.map(hotel => {
       const latitude = hotel.latitude
       const longitude = hotel.longitude

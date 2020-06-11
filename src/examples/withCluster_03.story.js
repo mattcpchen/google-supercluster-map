@@ -13,7 +13,7 @@ storiesOf('GoogleSuperCluster', module).add('customize ClusterMarker', () => {
     lng: hotels[0].longitude,
   }
 
-  const childrenItems = hotels.map(hotel => ({
+  const childItems = hotels.map(hotel => ({
     longitude: hotel.longitude,
     latitude: hotel.latitude,
   }))
@@ -36,7 +36,7 @@ storiesOf('GoogleSuperCluster', module).add('customize ClusterMarker', () => {
     <div style={{ height: '500px' }}>
       <GoogleSuperCluster
         isClustering
-        childrenItems={childrenItems}
+        childItems={childItems}
         center={center}
         ClusterComponent={SquaredClusterMarker}
         clusterStyle={{

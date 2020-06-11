@@ -25,15 +25,15 @@ export const getMapBounds = (maps, coordinatesArray) => {
 
 export const getClusters = ({
   isClustering,
-  childrenItems,
+  childItems,
   bounds,
   zoom,
   options,
 }) => {
-  if (!isClustering || !childrenItems?.length) {
+  if (!isClustering || !childItems?.length) {
     return {}
   }
-  const points = childrenItems.map(props => {
+  const points = childItems.map(props => {
     const { longitude, latitude, ...moreProps } = props
     return {
       type: 'Feature',
@@ -52,9 +52,10 @@ export const getClusters = ({
 }
 
 const GoogleSuperCluster = ({
-  children,
-  GMApiKey,
+  isClustering,
   className,
+  children,
+  childItems,
   center,
   defaultCenter,
   defaultZoom,
@@ -63,18 +64,16 @@ const GoogleSuperCluster = ({
   options,
   params,
   refitOnCoordsChange,
-  isClustering,
-  childrenItems,
   ClusterComponent,
   clusterStyle,
   clusterCallback,
 }) => {
+  const [bounds, setBounds] = useState(null)
+  const [zoom, setZoom] = useState(initZoom)
+  const initialItems = []
   const mapRef = useRef()
   let maps = null
   let map = null
-  const initialItems = []
-  const [bounds, setBounds] = useState(null)
-  const [zoom, setZoom] = useState(initZoom)
 
   // componentDidUpdate
   const getPrevPropValue = value => {
@@ -114,7 +113,7 @@ const GoogleSuperCluster = ({
   // clusters && supercluster
   const { clusters, supercluster } = getClusters({
     isClustering,
-    childrenItems,
+    childItems,
     bounds,
     zoom,
     options: {
@@ -174,7 +173,7 @@ const GoogleSuperCluster = ({
     <MapWrapper className={className}>
       <GoogleMapReact
         bootstrapURLKeys={{
-          key: `${GMApiKey}`,
+          key: `AIzaSyCBc99VuJdxwj5E9VQyo0dhD4YZRU_edOM`,
         }}
         center={center}
         defaultCenter={defaultCenter}
@@ -187,11 +186,10 @@ const GoogleSuperCluster = ({
         zoom={initZoom}
         onChange={({ zoom, bounds }) => handleClusterMapChanged(zoom, bounds)}
       >
-        {/**
-          Google Map React without Supercluster
-          this remains the same as how you implement googleMapRaact before
-         */}
-        {!isClustering && children
+        {/** without Supercluster
+             -- same as how you implement google-map-react before
+             -- pre-generate markers; pass thru children */}
+        {!isClustering && !childItems && children
           ? React.Children.map(children, element => {
               return React.cloneElement(element, {
                 elementref: childRefCallback,
@@ -199,7 +197,14 @@ const GoogleSuperCluster = ({
             })
           : null}
 
-        {/** Google Map React with Supercluster */}
+        {/** without Supercluster
+             -- same as how you implement google-map-react before
+             -- generate here; need to pass data thru childItems */}
+        {!isClustering && childItems
+          ? childItems.map(item => item.PointMarker)
+          : null}
+
+        {/** with Supercluster */}
         {isClustering &&
           clusters &&
           clusters.map(cluster => {
@@ -216,7 +221,7 @@ const GoogleSuperCluster = ({
                   defaultZoom,
                   longitude,
                   latitude,
-                  totalPointsCount: childrenItems.length,
+                  totalPointsCount: childItems.length,
                 })
               : generatePointMarker({
                   PointMarker,
@@ -231,30 +236,30 @@ const GoogleSuperCluster = ({
 
 GoogleSuperCluster.propTypes = {
   GMApiKey: PropTypes.string,
+  isClustering: PropTypes.bool,
+  className: PropTypes.string,
+  children: PropTypes.any,
+  childItems: PropTypes.arrayOf(
+    PropTypes.shape({
+      longitude: PropTypes.number,
+      latitude: PropTypes.number,
+      PointMarker: PropTypes.node,
+    })
+  ),
   center: PropTypes.shape({
     lat: PropTypes.number,
     lng: PropTypes.number,
   }),
-  children: PropTypes.any,
-  className: PropTypes.string,
   defaultCenter: PropTypes.shape({
     lat: PropTypes.number,
     lng: PropTypes.number,
   }),
+  zoom: PropTypes.number,
   defaultZoom: PropTypes.number,
   mapCallbackFn: PropTypes.func,
   options: PropTypes.object,
   params: PropTypes.object,
   refitOnCoordsChange: PropTypes.bool,
-  zoom: PropTypes.number,
-
-  isClustering: PropTypes.bool,
-  childrenItems: PropTypes.arrayOf(
-    PropTypes.shape({
-      longitude: PropTypes.number.isRequired,
-      latitude: PropTypes.number.isRequired,
-    })
-  ),
   ClusterComponent: PropTypes.object,
   clusterStyle: PropTypes.shape({
     bgColor: PropTypes.string,

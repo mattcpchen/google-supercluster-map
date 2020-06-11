@@ -35,17 +35,17 @@ const generatePointMarker = (lat, lng) => (
 storiesOf('GoogleSuperCluster', module).add('customize PointMarker', () => {
   const hotels = multiMockHotels.slice(0, 5)
   const center = { lat: hotels[0].latitude, lng: hotels[0].longitude }
-  const childrenItems = hotels.map(hotel => ({
+  const childItems = hotels.map(hotel => ({
     longitude: hotel.longitude,
     latitude: hotel.latitude,
-    PointMarker: generatePointMarker(hotel.latitude, hotel.longitude)
+    PointMarker: generatePointMarker(hotel.latitude, hotel.longitude),
   }))
 
   return (
     <div style={{ height: '500px' }}>
       <GoogleSuperCluster
         isClustering
-        childrenItems={childrenItems}
+        childItems={childItems}
         center={center}
         mapCallbackFn={action(`call mapCallbackFn`)}
         options={{ clickableIcons: false }}

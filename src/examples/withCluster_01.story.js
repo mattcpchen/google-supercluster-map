@@ -13,7 +13,7 @@ storiesOf('GoogleSuperCluster', module).add('with Default setting', () => {
     lng: hotels[0].longitude,
   }
 
-  const childrenItems = hotels.map(hotel => ({
+  const childItems = hotels.map(hotel => ({
     longitude: hotel.longitude,
     latitude: hotel.latitude,
   }))
@@ -22,7 +22,7 @@ storiesOf('GoogleSuperCluster', module).add('with Default setting', () => {
     <div style={{ height: '500px' }}>
       <GoogleSuperCluster
         isClustering
-        childrenItems={childrenItems}
+        childItems={childItems}
         center={center}
         mapCallbackFn={action(`call mapCallbackFn`)}
         options={{ clickableIcons: false }}

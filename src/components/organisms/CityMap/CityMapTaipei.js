@@ -37,8 +37,8 @@ const CityMapTaipei = ({ hotels, isZoomOut }) => {
       }))
     : null
 
-  // for childrenItems
-  const childrenItems = hotels.map(hotel => {
+  // for childItems
+  const childItems = hotels.map(hotel => {
     const currencySymbol = hotel.ratesSummary.minCurrencyCodeSymbol
     const currPrice = Math.floor(hotel.ratesSummary.minPrice)
     const latitude = hotel.location.latitude
@@ -85,7 +85,7 @@ const CityMapTaipei = ({ hotels, isZoomOut }) => {
   return (
     <GoogleSuperCluster
       isClustering
-      childrenItems={childrenItems}
+      childItems={childItems}
       center={center}
       clusterCallback={clusterCallback}
       clusterStyle={{

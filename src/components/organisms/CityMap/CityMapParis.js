@@ -41,8 +41,8 @@ const CityMapParis = ({ hotels, isZoomOut }) => {
       }))
     : null
 
-  // for childrenItems
-  const childrenItems = hotels.map(hotel => {
+  // for childItems
+  const childItems = hotels.map(hotel => {
     const latitude = hotel.location.latitude
     const longitude = hotel.location.longitude
     const rgbColor = getRandomRGBColor()
@@ -86,7 +86,7 @@ const CityMapParis = ({ hotels, isZoomOut }) => {
   return (
     <GoogleSuperCluster
       isClustering
-      childrenItems={childrenItems}
+      childItems={childItems}
       center={center}
       clusterCallback={clusterCallback}
       ClusterComponent={ColorBallMarker}

@@ -32,6 +32,10 @@ const generateLatLong = (maps, lat, lon) => {
   return new maps.LatLng(lat, lon)
 }
 
+/**
+ * Note: legacy marker is created in callback
+ */
+
 storiesOf('GSC without Clustering Markers', module)
   .add('With one (legacy) marker', () => {
     const hotels = multiMockHotels.slice(0, 1)
