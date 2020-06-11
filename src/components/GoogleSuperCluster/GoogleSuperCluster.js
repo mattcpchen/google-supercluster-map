@@ -274,6 +274,7 @@ GoogleSuperCluster.defaultProps = {
   defaultZoom: 14,
   params: {},
   refitOnCoordsChange: false,
+  PclnGMApiKey: 'AIzaSyCBc99VuJdxwj5E9VQyo0dhD4YZRU_edOM',
   GMApiKey: 'AIzaSyD2Zt3b8xGZVVqu3751QhKlm93v3FasoL8',
 }
 
