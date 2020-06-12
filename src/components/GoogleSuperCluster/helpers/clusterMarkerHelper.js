@@ -18,6 +18,13 @@ const DefaultCluster = styled(Box)`
   transform: translate(-50%, -100%);
 `
 
+const DescriptionContainer = styled(Text)`
+  width: 100%;
+`
+const WrapText = styled(Text)`
+  overflow-wrap: break-word;
+`
+
 const Marker = ({ ClusterComponent, children, ...props }) => {
   return ClusterComponent ? (
     <ClusterComponent {...props}>{children}</ClusterComponent>
@@ -25,13 +32,6 @@ const Marker = ({ ClusterComponent, children, ...props }) => {
     <DefaultCluster {...props}>{children}</DefaultCluster>
   )
 }
-
-const DescriptionContainer = styled(Text)`
-  width: 100%;
-`
-const WrapText = styled(Text)`
-  overflow-wrap: break-word;
-`
 
 const flattenClusterData = (supercluster, cluster) => {
   const children = supercluster.getChildren(cluster.id)
@@ -54,8 +54,8 @@ const generateClusterMarker = ({
   ClusterComponent,
   clusterStyle: resetStyle,
   clusterCallback,
-  latitude,
-  longitude,
+  lat,
+  lng,
   defaultZoom,
   totalPointsCount,
 }) => {
@@ -81,11 +81,7 @@ const generateClusterMarker = ({
   const titleSize = clusterData.titleSize ?? clusterStyle.titleSize
   const subtitleSize = clusterData.subtitleSize ?? clusterStyle.subtitleSize
   return (
-    <PointMarkerWrapper
-      key={`ClusterMarker-${cluster.id}`}
-      lat={latitude}
-      lng={longitude}
-    >
+    <PointMarkerWrapper key={`ClusterMarker-${cluster.id}`} lat={lat} lng={lng}>
       <Marker
         ClusterComponent={ClusterComponent}
         style={{
@@ -100,13 +96,17 @@ const generateClusterMarker = ({
             defaultZoom
           )
           mapRef && mapRef.current.setZoom(expansionZoom)
-          mapRef && mapRef.current.panTo({ lat: latitude, lng: longitude })
+          mapRef && mapRef.current.panTo({ lat, lng })
         }}
       >
         <DescriptionContainer textAlign='center' width={1}>
-          <Text bold fontSize={titleSize}>{clusterTitle}</Text>
+          <Text bold fontSize={titleSize}>
+            {clusterTitle}
+          </Text>
           {clusterSubtitle && (
-            <WrapText fontSize={`${subtitleSize}px`} mt={1}>{clusterSubtitle}</WrapText>
+            <WrapText fontSize={`${subtitleSize}px`} mt={1}>
+              {clusterSubtitle}
+            </WrapText>
           )}
         </DescriptionContainer>
       </Marker>
@@ -116,6 +116,7 @@ const generateClusterMarker = ({
 
 Marker.propTypes = {
   ClusterComponent: PropTypes.object,
+  children: PropTypes.any,
 }
 
 generateClusterMarker.propTypes = {
@@ -129,13 +130,14 @@ generateClusterMarker.propTypes = {
   clusterStyle: PropTypes.shape({
     bgColor: PropTypes.string,
     bgSize: PropTypes.number,
+    bgGlowing: PropTypes.string,
     titleSize: PropTypes.number,
     subtitleSize: PropTypes.number,
   }),
   clusterCallback: PropTypes.func,
   defaultZoom: PropTypes.number,
-  latitude: PropTypes.number,
-  longitude: PropTypes.number,
+  lat: PropTypes.number,
+  lng: PropTypes.number,
   totalPointsCount: PropTypes.number,
 }
 

@@ -45,17 +45,25 @@ const CityMapNYC = ({ hotels, isZoomOut }) => {
       }))
     : null
 
-  // for childItems
+  // for children
   const totalMinPrice = findTotalMinPrice(hotels)
-  const childItems = hotels.map(hotel => {
+  const mapChildren = hotels.map(hotel => {
     const currencySymbol = hotel.ratesSummary.minCurrencyCodeSymbol
     const hotelPrice = Math.floor(hotel.ratesSummary.minPrice)
-    const latitude = hotel.location.latitude
-    const longitude = hotel.location.longitude
+    const lat = hotel.location.latitude
+    const lng = hotel.location.longitude
     const isCheapest = hotelPrice === totalMinPrice
     const Marker = isCheapest ? Discount : HotelCircle
-    const PointMarker = (
-      <PointMarkerWrapper key={hotel.hotelID} lat={latitude} lng={longitude}>
+    return (
+      <PointMarkerWrapper
+        key={hotel.hotelID}
+        lat={lat}
+        lng={lng}
+        hotelId={hotel.hotelID}
+        hotelName={hotel.name}
+        currencySymbol={currencySymbol}
+        hotelPrice={hotelPrice}
+      >
         <Marker
           size={pointMarkerSize}
           color={isCheapest ? cheapColor : normalColor}
@@ -63,15 +71,6 @@ const CityMapNYC = ({ hotels, isZoomOut }) => {
         />
       </PointMarkerWrapper>
     )
-    return {
-      hotelId: hotel.hotelID,
-      hotelName: hotel.name,
-      currencySymbol: currencySymbol,
-      hotelPrice: hotelPrice,
-      latitude,
-      longitude,
-      PointMarker,
-    }
   })
 
   // for clusterCallback
@@ -112,7 +111,6 @@ const CityMapNYC = ({ hotels, isZoomOut }) => {
   return (
     <GoogleSuperCluster
       isClustering
-      childItems={childItems}
       center={center}
       mapCallbackFn={mapCallbackFn}
       clusterCallback={clusterCallback}
@@ -128,7 +126,9 @@ const CityMapNYC = ({ hotels, isZoomOut }) => {
         navigationControl: false,
         mapTypeControl: false,
       }}
-    />
+    >
+      {mapChildren}
+    </GoogleSuperCluster>
   )
 }
 

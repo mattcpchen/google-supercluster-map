@@ -19,9 +19,8 @@ const MarkerWrapper = ({ children }) => (
   </div>
 )
 
-
 storiesOf('GSC without Clustering Markers', module).add(
-  'With several markers (thru children)',
+  'With several markers',
   () => {
     const hotels = multiMockHotels
 
@@ -30,14 +29,11 @@ storiesOf('GSC without Clustering Markers', module).add(
       lng: hotels[0].longitude,
     }
 
-    /**
-     * pre-generated marker and pass thru children
-     */
     const mapChildern = hotels.map(hotel => {
-      const latitude = hotel.latitude
-      const longitude = hotel.longitude
+      const lat = hotel.latitude
+      const lng = hotel.longitude
       return (
-        <MarkerWrapper key={latitude} lat={latitude} lng={longitude}>
+        <MarkerWrapper key={`${lat}-${lng}`} lat={lat} lng={lng}>
           <Pin
             size={48}
             color='#0071ff'
@@ -49,7 +45,11 @@ storiesOf('GSC without Clustering Markers', module).add(
 
     return (
       <div style={{ height: '500px' }}>
-        <GoogleSuperCluster center={defaultCenter} defaultZoom={14}>
+        <GoogleSuperCluster
+          center={defaultCenter}
+          defaultZoom={14}
+          options={{ clickableIcons: false }}
+        >
           {mapChildern}
         </GoogleSuperCluster>
       </div>

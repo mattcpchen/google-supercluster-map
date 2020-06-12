@@ -4,7 +4,6 @@ import GoogleMapReact from 'google-map-react'
 import useSupercluster from 'use-supercluster'
 import styled from 'styled-components'
 import generateClusterMarker from './helpers/clusterMarkerHelper'
-import generatePointMarker from './helpers/pointMarkerHelper'
 
 const MapWrapper = styled.div`
   height: 100%;
@@ -25,25 +24,26 @@ export const getMapBounds = (maps, coordinatesArray) => {
 
 export const getClusters = ({
   isClustering,
-  childItems,
+  children,
   bounds,
   zoom,
   options,
 }) => {
-  if (!isClustering || !childItems?.length) {
+  if (!isClustering || !children?.length) {
     return {}
   }
-  const points = childItems.map(props => {
-    const { longitude, latitude, ...moreProps } = props
+  const points = children.map(child => {
+    const { lat, lng, ...moreProps } = child.props
     return {
       type: 'Feature',
       properties: {
         cluster: false,
+        PointMarker: child,
         ...moreProps,
       },
       geometry: {
         type: 'Point',
-        coordinates: [parseFloat(longitude), parseFloat(latitude)],
+        coordinates: [parseFloat(lng), parseFloat(lat)],
       },
     }
   })
@@ -55,7 +55,6 @@ const GoogleSuperCluster = ({
   isClustering,
   className,
   children,
-  childItems,
   center,
   defaultCenter,
   defaultZoom,
@@ -113,7 +112,7 @@ const GoogleSuperCluster = ({
   // clusters && supercluster
   const { clusters, supercluster } = getClusters({
     isClustering,
-    childItems,
+    children,
     bounds,
     zoom,
     options: {
@@ -186,10 +185,7 @@ const GoogleSuperCluster = ({
         zoom={initZoom}
         onChange={({ zoom, bounds }) => handleClusterMapChanged(zoom, bounds)}
       >
-        {/** without Supercluster
-             -- same as how you implement google-map-react before
-             -- pre-generate markers; pass thru children */}
-        {!isClustering && !childItems && children
+        {!isClustering && children
           ? React.Children.map(children, element => {
               return React.cloneElement(element, {
                 elementref: childRefCallback,
@@ -197,18 +193,10 @@ const GoogleSuperCluster = ({
             })
           : null}
 
-        {/** without Supercluster
-             -- same as how you implement google-map-react before
-             -- generate here; need to pass data thru childItems */}
-        {!isClustering && childItems
-          ? childItems.map(item => item.PointMarker)
-          : null}
-
-        {/** with Supercluster */}
         {isClustering &&
           clusters &&
           clusters.map(cluster => {
-            const [longitude, latitude] = cluster.geometry.coordinates
+            const [lng, lat] = cluster.geometry.coordinates
             const { PointMarker, cluster: isCluster } = cluster.properties
             return isCluster
               ? generateClusterMarker({
@@ -219,15 +207,11 @@ const GoogleSuperCluster = ({
                   clusterStyle,
                   clusterCallback,
                   defaultZoom,
-                  longitude,
-                  latitude,
-                  totalPointsCount: childItems.length,
+                  lat,
+                  lng,
+                  totalPointsCount: children.length,
                 })
-              : generatePointMarker({
-                  PointMarker,
-                  longitude,
-                  latitude,
-                })
+              : PointMarker
           })}
       </GoogleMapReact>
     </MapWrapper>
@@ -239,13 +223,6 @@ GoogleSuperCluster.propTypes = {
   isClustering: PropTypes.bool,
   className: PropTypes.string,
   children: PropTypes.any,
-  childItems: PropTypes.arrayOf(
-    PropTypes.shape({
-      longitude: PropTypes.number,
-      latitude: PropTypes.number,
-      PointMarker: PropTypes.node,
-    })
-  ),
   center: PropTypes.shape({
     lat: PropTypes.number,
     lng: PropTypes.number,

@@ -41,13 +41,20 @@ const CityMapParis = ({ hotels, isZoomOut }) => {
       }))
     : null
 
-  // for childItems
-  const childItems = hotels.map(hotel => {
-    const latitude = hotel.location.latitude
-    const longitude = hotel.location.longitude
+  // for children
+  const mapChildren = hotels.map(hotel => {
+    const lat = hotel.location.latitude
+    const lng = hotel.location.longitude
     const rgbColor = getRandomRGBColor()
-    const PointMarker = (
-      <PointMarkerWrapper key={hotel.hotelID} lat={latitude} lng={longitude}>
+    return (
+      <PointMarkerWrapper
+        key={hotel.hotelID}
+        lat={lat}
+        lng={lng}
+        hotelId={hotel.hotelID}
+        hotelName={hotel.name}
+        rgbColor={rgbColor}
+      >
         <Marker
           size={pointMarkerSize}
           color={`rgb(${rgbColor[0]}, ${rgbColor[1]}, ${rgbColor[2]})`}
@@ -55,14 +62,6 @@ const CityMapParis = ({ hotels, isZoomOut }) => {
         />
       </PointMarkerWrapper>
     )
-    return {
-      hotelId: hotel.hotelID,
-      hotelName: hotel.name,
-      rgbColor,
-      latitude,
-      longitude,
-      PointMarker,
-    }
   })
 
   // for callback
@@ -86,7 +85,6 @@ const CityMapParis = ({ hotels, isZoomOut }) => {
   return (
     <GoogleSuperCluster
       isClustering
-      childItems={childItems}
       center={center}
       clusterCallback={clusterCallback}
       ClusterComponent={ColorBallMarker}
@@ -101,7 +99,9 @@ const CityMapParis = ({ hotels, isZoomOut }) => {
         navigationControl: false,
         mapTypeControl: false,
       }}
-    />
+    >
+      {mapChildren}
+    </GoogleSuperCluster>
   )
 }
 

@@ -37,15 +37,26 @@ const CityMapTaipei = ({ hotels, isZoomOut }) => {
       }))
     : null
 
-  // for childItems
-  const childItems = hotels.map(hotel => {
+  // for children
+  const maChildren = hotels.map(hotel => {
+    const hotelId = hotel.hotelID
     const currencySymbol = hotel.ratesSummary.minCurrencyCodeSymbol
     const currPrice = Math.floor(hotel.ratesSummary.minPrice)
-    const latitude = hotel.location.latitude
-    const longitude = hotel.location.longitude
-    const isRed = selectedIds.indexOf(hotel.hotelID) > -1
-    const PointMarker = (
-      <PointMarkerWrapper key={hotel.hotelID} lat={latitude} lng={longitude}>
+    const lat = hotel.location.latitude
+    const lng = hotel.location.longitude
+    const isRed = selectedIds.indexOf(hotelId) > -1
+    return (
+      <PointMarkerWrapper
+        key={hotelId}
+        lat={lat}
+        lng={lng}
+        hotelId={hotelId}
+        hotelName={hotel.name}
+        currencySymbol={currencySymbol}
+        currencyPrice={currPrice}
+        isRed={isRed}
+        value={isRed ? 1 : 0}
+      >
         <Marker
           size={pointMarkerSize}
           color={isRed ? onColor : offColor}
@@ -54,17 +65,6 @@ const CityMapTaipei = ({ hotels, isZoomOut }) => {
         />
       </PointMarkerWrapper>
     )
-    return {
-      hotelId: hotel.hotelID,
-      hotelName: hotel.name,
-      currencySymbol: currencySymbol,
-      currencyPrice: currPrice,
-      isRed,
-      value: isRed ? 1 : 0,
-      latitude,
-      longitude,
-      PointMarker,
-    }
   })
 
   // for callback
@@ -85,7 +85,6 @@ const CityMapTaipei = ({ hotels, isZoomOut }) => {
   return (
     <GoogleSuperCluster
       isClustering
-      childItems={childItems}
       center={center}
       clusterCallback={clusterCallback}
       clusterStyle={{
@@ -99,7 +98,9 @@ const CityMapTaipei = ({ hotels, isZoomOut }) => {
         navigationControl: false,
         mapTypeControl: false,
       }}
-    />
+    >
+      {maChildren}
+    </GoogleSuperCluster>
   )
 }
 

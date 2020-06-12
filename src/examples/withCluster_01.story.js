@@ -1,32 +1,42 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
-import { action } from '@storybook/addon-actions'
 import { multiMockHotels } from './helpers/mockData'
-
+import { Pin } from 'pcln-icons'
+import { PointMarkerWrapper } from '../components/GSCMarkers'
 import GoogleSuperCluster from '../components/GoogleSuperCluster'
 
-storiesOf('GoogleSuperCluster', module).add('with Default setting', () => {
-  const hotels = multiMockHotels.slice(0, 5)
+storiesOf('GoogleSuperCluster', module).add('default setting', () => {
+  const hotels = multiMockHotels
 
-  const center = {
+  const defaultCenter = {
     lat: hotels[0].latitude,
     lng: hotels[0].longitude,
   }
 
-  const childItems = hotels.map(hotel => ({
-    longitude: hotel.longitude,
-    latitude: hotel.latitude,
-  }))
+  const mapChildern = hotels.map(hotel => (
+    <PointMarkerWrapper
+      key={`${hotel.latitude}-${hotel.longitude}`}
+      lat={hotel.latitude}
+      lng={hotel.longitude}
+    >
+      <Pin
+        size={48}
+        color='#0071ff'
+        style={{ transform: 'translate(-50%, -100%)' }}
+      />
+    </PointMarkerWrapper>
+  ))
 
   return (
     <div style={{ height: '500px' }}>
       <GoogleSuperCluster
         isClustering
-        childItems={childItems}
-        center={center}
-        mapCallbackFn={action(`call mapCallbackFn`)}
+        center={defaultCenter}
+        defaultZoom={14}
         options={{ clickableIcons: false }}
-      />
+      >
+        {mapChildern}
+      </GoogleSuperCluster>
     </div>
   )
 })

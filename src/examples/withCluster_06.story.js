@@ -3,34 +3,8 @@ import { storiesOf } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
 import { multiMockHotels } from './helpers/mockData'
 import { HotelCircle, Discount } from 'pcln-icons'
+import { PointMarkerWrapper } from '../components/GSCMarkers'
 import GoogleSuperCluster from '../components/GoogleSuperCluster'
-
-// eslint-disable-next-line react/prop-types
-const MarkerWrapper = ({ elementref, children }) => (
-  <div
-    ref={elementref}
-    style={{
-      left: '0',
-      top: '0',
-      width: '0',
-      height: '0',
-      position: 'absolute',
-    }}
-  >
-    {children}
-  </div>
-)
-
-const generatePointMarker = (Marker, color, lat, lng) => (
-  <MarkerWrapper key={`PointMarker-${lat}-${lng}`} lat={lat} lng={lng}>
-    <Marker
-      size={48}
-      color={color}
-      style={{ transform: 'translate(-50%, -100%)', cursor: 'pointer' }}
-      onClick={action(`click on me`)}
-    />
-  </MarkerWrapper>
-)
 
 storiesOf('GoogleSuperCluster', module).add(
   'customize callbackFn - advanced 2',
@@ -42,21 +16,32 @@ storiesOf('GoogleSuperCluster', module).add(
     const cheapest = 100 // my original setting
     const hotels = multiMockHotels.slice(0, 7)
     const center = { lat: hotels[0].latitude, lng: hotels[0].longitude }
-    const childItems = hotels.map(hotel => ({
-      longitude: hotel.longitude,
-      latitude: hotel.latitude,
-      hotelId: hotel.hotelId,
-      hotelName: hotel.hotelName,
-      hotelPrice: hotel.hotelPrice,
-      hotelPriceValue: hotel.hotelPriceValue,
-      isCheapest: hotel.hotelPriceValue === 100,
-      PointMarker: generatePointMarker(
-        hotel.hotelPriceValue === cheapest ? Discount : HotelCircle,
-        hotel.hotelPriceValue === cheapest ? winnerColor : lightColor,
-        hotel.latitude,
-        hotel.longitude
-      ),
-    }))
+    const mapChildren = hotels.map(hotel => {
+      const lat = hotel.latitude
+      const lng = hotel.longitude
+      const Marker = hotel.hotelPriceValue === cheapest ? Discount : HotelCircle
+      const color =
+        hotel.hotelPriceValue === cheapest ? winnerColor : lightColor
+      return (
+        <PointMarkerWrapper
+          key={`PointMarker-${lat}-${lng}`}
+          lat={lat}
+          lng={lng}
+          hotelId={hotel.hotelId}
+          hotelName={hotel.hotelName}
+          hotelPrice={hotel.hotelPrice}
+          hotelPriceValue={hotel.hotelPriceValue}
+          isCheapest={hotel.hotelPriceValue === 100}
+        >
+          <Marker
+            size={48}
+            color={color}
+            style={{ transform: 'translate(-50%, -100%)', cursor: 'pointer' }}
+            onClick={action(`click on me`)}
+          />
+        </PointMarkerWrapper>
+      )
+    })
 
     const clusterCallback = ({ totalPointsCount, clusterPoints }) => {
       const clusterPointsCount = clusterPoints.length
@@ -84,12 +69,13 @@ storiesOf('GoogleSuperCluster', module).add(
       <div style={{ height: '500px' }}>
         <GoogleSuperCluster
           isClustering
-          childItems={childItems}
           center={center}
           clusterCallback={clusterCallback}
           mapCallbackFn={action(`call mapCallbackFn`)}
           options={{ clickableIcons: false }}
-        />
+        >
+          {mapChildren}
+        </GoogleSuperCluster>
       </div>
     )
   }
