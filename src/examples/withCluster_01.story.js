@@ -2,7 +2,7 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { multiMockHotels } from './helpers/mockData'
 import { Pin } from 'pcln-icons'
-import { PointMarkerWrapper } from '../components/GSCMarkers'
+import { MapItemContainer } from '../components/GoogleSuperCluster'
 import GoogleSuperCluster from '../components/GoogleSuperCluster'
 
 storiesOf('GoogleSuperCluster', module).add('default setting', () => {
@@ -14,7 +14,7 @@ storiesOf('GoogleSuperCluster', module).add('default setting', () => {
   }
 
   const mapChildern = hotels.map(hotel => (
-    <PointMarkerWrapper
+    <MapItemContainer
       key={`${hotel.latitude}-${hotel.longitude}`}
       lat={hotel.latitude}
       lng={hotel.longitude}
@@ -24,7 +24,7 @@ storiesOf('GoogleSuperCluster', module).add('default setting', () => {
         color='#0071ff'
         style={{ transform: 'translate(-50%, -100%)' }}
       />
-    </PointMarkerWrapper>
+    </MapItemContainer>
   ))
 
   return (

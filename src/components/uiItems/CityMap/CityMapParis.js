@@ -1,10 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import styled from 'styled-components'
-import GoogleSuperCluster from '../../GoogleSuperCluster'
-import { PointMarkerWrapper, ClusterMarker } from '../../GSCMarkers'
 import { getRandomPoint } from './_helpers'
 import { User as Marker } from 'pcln-icons'
+import { MapItemContainer } from '../../GoogleSuperCluster'
+import GoogleSuperCluster from '../../GoogleSuperCluster'
 
 const getRandomRGBColor = () => {
   const rgb = Math.floor(Math.random() * 3)
@@ -26,10 +25,6 @@ const mixAllRBGColors = clusterPoints => {
   return mixRGB.map(color => Math.floor(color / totalPoints))
 }
 
-const ColorBallMarker = styled(ClusterMarker)`
-  border: 0;
-`
-
 const CityMapParis = ({ hotels, isZoomOut }) => {
   const pointMarkerSize = 52
   // basic setting
@@ -47,7 +42,7 @@ const CityMapParis = ({ hotels, isZoomOut }) => {
     const lng = hotel.location.longitude
     const rgbColor = getRandomRGBColor()
     return (
-      <PointMarkerWrapper
+      <MapItemContainer
         key={hotel.hotelID}
         lat={lat}
         lng={lng}
@@ -60,7 +55,7 @@ const CityMapParis = ({ hotels, isZoomOut }) => {
           color={`rgb(${rgbColor[0]}, ${rgbColor[1]}, ${rgbColor[2]})`}
           style={{ transform: 'translate(-50%, -100%)' }}
         />
-      </PointMarkerWrapper>
+      </MapItemContainer>
     )
   })
 
@@ -87,7 +82,6 @@ const CityMapParis = ({ hotels, isZoomOut }) => {
       isClustering
       center={center}
       clusterCallback={clusterCallback}
-      ClusterComponent={ColorBallMarker}
       clusterStyle={{
         titleSize: 12,
         subtitleSize: 12,

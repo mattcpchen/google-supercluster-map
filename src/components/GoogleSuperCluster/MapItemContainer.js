@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-const PointMarkerWrapper = ({ elementref, children }) => (
+const MapItemContainer = ({ elementref, children }) => (
   <div
     ref={elementref}
     style={{
@@ -16,9 +16,9 @@ const PointMarkerWrapper = ({ elementref, children }) => (
   </div>
 )
 
-PointMarkerWrapper.propTypes = {
+MapItemContainer.propTypes = {
   elementref: PropTypes.func,
   children: PropTypes.any,
 }
 
-export default PointMarkerWrapper
+export default MapItemContainer

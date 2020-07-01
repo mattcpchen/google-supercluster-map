@@ -1,22 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Text, Box } from 'pcln-design-system'
+import { Text } from 'pcln-design-system'
 import styled from 'styled-components'
-import PointMarkerWrapper from '../../GSCMarkers/PointMarkerWrapper'
-
-const DefaultCluster = styled(Box)`
-  position: relative;
-  border-radius: 50%;
-  color: #fff;
-  border: 2px solid #fff;
-  box-shadow: 0px 0px 3px 3px rgba(0, 0, 0, 0.1);
-  padding: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  transform: translate(-50%, -100%);
-`
+import { CircleClusterMarker as DefaultClusterComponent } from '../../clusterMarkers'
+import MapItemContainer from '../MapItemContainer'
 
 const DescriptionContainer = styled(Text)`
   width: 100%;
@@ -24,14 +11,6 @@ const DescriptionContainer = styled(Text)`
 const WrapText = styled(Text)`
   overflow-wrap: break-word;
 `
-
-const Marker = ({ ClusterComponent, children, ...props }) => {
-  return ClusterComponent ? (
-    <ClusterComponent {...props}>{children}</ClusterComponent>
-  ) : (
-    <DefaultCluster {...props}>{children}</DefaultCluster>
-  )
-}
 
 const flattenClusterData = (supercluster, cluster) => {
   const children = supercluster.getChildren(cluster.id)
@@ -47,43 +26,33 @@ const flattenClusterData = (supercluster, cluster) => {
   return result
 }
 
-const generateClusterMarker = ({
+const SuperclusterMarker = ({
   mapRef,
   supercluster,
   cluster,
-  ClusterComponent,
-  clusterStyle: resetStyle,
+  clusterComponent,
+  clusterStyle,
   clusterCallback,
   lat,
   lng,
   defaultZoom,
   totalPointsCount,
 }) => {
-  const clusterStyle = {
-    bgSize: 45,
-    bgColor: '#007aff',
-    bgGlowing: '',
-    titleSize: 12,
-    subtitleSize: 8,
-    ...resetStyle,
-  }
-  // get current cluster info, send to the user so they can customize how/what they wanna display
+  const Marker = clusterComponent || DefaultClusterComponent
   const clusterPoints = flattenClusterData(supercluster, cluster)
   const clusterData = clusterCallback
     ? clusterCallback({ totalPointsCount, clusterPoints })
     : {}
-  // get data from the user
-  const clusterSize = clusterData.clusterSize ?? clusterStyle.bgSize
-  const clusterColor = clusterData.clusterColor ?? clusterStyle.bgColor
-  const clusterGlowing = clusterData.clusterGlowing ?? clusterStyle.bgGlowing
+  const clusterSize = clusterData.clusterSize ?? clusterStyle.size
+  const clusterColor = clusterData.clusterColor ?? clusterStyle.color
+  const clusterGlowing = clusterData.clusterGlowing ?? clusterStyle.glowing
   const clusterTitle = clusterData.clusterTitle ?? clusterPoints.length
   const clusterSubtitle = clusterData.clusterSubtitle ?? ''
   const titleSize = clusterData.titleSize ?? clusterStyle.titleSize
   const subtitleSize = clusterData.subtitleSize ?? clusterStyle.subtitleSize
   return (
-    <PointMarkerWrapper key={`ClusterMarker-${cluster.id}`} lat={lat} lng={lng}>
+    <MapItemContainer key={`ClusterMarker-${cluster.id}`} lat={lat} lng={lng}>
       <Marker
-        ClusterComponent={ClusterComponent}
         style={{
           width: `${clusterSize}px`,
           height: `${clusterSize}px`,
@@ -100,7 +69,7 @@ const generateClusterMarker = ({
         }}
       >
         <DescriptionContainer textAlign='center' width={1}>
-          <Text bold fontSize={titleSize}>
+          <Text bold fontSize={`${titleSize}px`}>
             {clusterTitle}
           </Text>
           {clusterSubtitle && (
@@ -110,27 +79,22 @@ const generateClusterMarker = ({
           )}
         </DescriptionContainer>
       </Marker>
-    </PointMarkerWrapper>
+    </MapItemContainer>
   )
 }
 
-Marker.propTypes = {
-  ClusterComponent: PropTypes.object,
-  children: PropTypes.any,
-}
-
-generateClusterMarker.propTypes = {
+SuperclusterMarker.propTypes = {
   mapRef: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.shape({ current: PropTypes.any }),
   ]),
   supercluster: PropTypes.any,
   cluster: PropTypes.object,
-  ClusterComponent: PropTypes.object,
+  clusterComponent: PropTypes.object,
   clusterStyle: PropTypes.shape({
-    bgColor: PropTypes.string,
-    bgSize: PropTypes.number,
-    bgGlowing: PropTypes.string,
+    size: PropTypes.number,
+    color: PropTypes.string,
+    glowing: PropTypes.string,
     titleSize: PropTypes.number,
     subtitleSize: PropTypes.number,
   }),
@@ -141,4 +105,4 @@ generateClusterMarker.propTypes = {
   totalPointsCount: PropTypes.number,
 }
 
-export default generateClusterMarker
+export default SuperclusterMarker

@@ -1,10 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import styled from 'styled-components'
-import GoogleSuperCluster from '../../GoogleSuperCluster'
-import { ClusterMarker, PointMarkerWrapper } from '../../GSCMarkers'
-import { getRandomPoint } from './_helpers'
 import { HotelCircle, Discount } from 'pcln-icons'
+import { getRandomPoint } from './_helpers'
+import { MapItemContainer } from '../../GoogleSuperCluster'
+import GoogleSuperCluster from '../../GoogleSuperCluster'
 
 const findTotalMinPrice = hotels => {
   let minPrice = Number.MAX_VALUE
@@ -23,15 +22,11 @@ const findClusterMinPrice = points => {
   return minPrice
 }
 
-const ColorBallMarker = styled(ClusterMarker)`
-  border: 0;
-`
-
 const CityMapNYC = ({ hotels, isZoomOut }) => {
   const normalColor = '#007aff'
   const normalGlowing = '0 0 1px 1px #ffffff'
   const cheapColor = '#c00'
-  const cheapGlowing = `0 0 1px 3px #c00`
+  const cheapGlowing = `0 0 1px 2px #c00`
   const pointMarkerSize = 48
   const clusterOffSize = 48
 
@@ -55,7 +50,7 @@ const CityMapNYC = ({ hotels, isZoomOut }) => {
     const isCheapest = hotelPrice === totalMinPrice
     const Marker = isCheapest ? Discount : HotelCircle
     return (
-      <PointMarkerWrapper
+      <MapItemContainer
         key={hotel.hotelID}
         lat={lat}
         lng={lng}
@@ -69,7 +64,7 @@ const CityMapNYC = ({ hotels, isZoomOut }) => {
           color={isCheapest ? cheapColor : normalColor}
           style={{ transform: 'translate(-50%, -100%)' }}
         />
-      </PointMarkerWrapper>
+      </MapItemContainer>
     )
   })
 
@@ -112,13 +107,12 @@ const CityMapNYC = ({ hotels, isZoomOut }) => {
     <GoogleSuperCluster
       isClustering
       center={center}
-      mapCallbackFn={mapCallbackFn}
       clusterCallback={clusterCallback}
-      ClusterComponent={ColorBallMarker}
       clusterStyle={{
-        bgSize: clusterOffSize,
+        size: clusterOffSize,
         subtitleSize: 10,
       }}
+      mapCallbackFn={mapCallbackFn}
       params={{ coordinatesArray }}
       options={{
         clickableIcons: false,

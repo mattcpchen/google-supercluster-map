@@ -1,9 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import GoogleSuperCluster from '../../GoogleSuperCluster'
-import { PointMarkerWrapper } from '../../GSCMarkers'
 import { getRandomPoint } from './_helpers'
 import { SingleOccupancy, MultiOccupancy } from 'pcln-icons'
+import { MapItemContainer } from '../../GoogleSuperCluster'
+import GoogleSuperCluster from '../../GoogleSuperCluster'
 
 const CityMapSydney = ({ hotels, defaultZoom, isZoomOut }) => {
   const colors = []
@@ -18,13 +18,13 @@ const CityMapSydney = ({ hotels, defaultZoom, isZoomOut }) => {
     const Marker =
       Math.floor(Math.random() * 5) === 0 ? MultiOccupancy : SingleOccupancy
     return (
-      <PointMarkerWrapper key={latitude} lat={latitude} lng={longitude}>
+      <MapItemContainer key={latitude} lat={latitude} lng={longitude}>
         <Marker
           size={48}
           color={color}
           style={{ transform: 'translate(-50%, -100%)' }}
         />
-      </PointMarkerWrapper>
+      </MapItemContainer>
     )
   })
 

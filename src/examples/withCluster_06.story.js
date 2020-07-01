@@ -3,7 +3,7 @@ import { storiesOf } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
 import { multiMockHotels } from './helpers/mockData'
 import { HotelCircle, Discount } from 'pcln-icons'
-import { PointMarkerWrapper } from '../components/GSCMarkers'
+import { MapItemContainer } from '../components/GoogleSuperCluster'
 import GoogleSuperCluster from '../components/GoogleSuperCluster'
 
 storiesOf('GoogleSuperCluster', module).add(
@@ -23,7 +23,7 @@ storiesOf('GoogleSuperCluster', module).add(
       const color =
         hotel.hotelPriceValue === cheapest ? winnerColor : lightColor
       return (
-        <PointMarkerWrapper
+        <MapItemContainer
           key={`PointMarker-${lat}-${lng}`}
           lat={lat}
           lng={lng}
@@ -39,7 +39,7 @@ storiesOf('GoogleSuperCluster', module).add(
             style={{ transform: 'translate(-50%, -100%)', cursor: 'pointer' }}
             onClick={action(`click on me`)}
           />
-        </PointMarkerWrapper>
+        </MapItemContainer>
       )
     })
 
