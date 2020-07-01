@@ -55,8 +55,7 @@ export const mergeClusterChildren = (
       cluster.points = flattenClusterData(supercluster, cluster)
     }
   })
-
-  // return ONLY
+  // return clusters ONLY
   if (pointChildren && pointChildren.length === 0) {
     return clusters
   }
@@ -263,7 +262,7 @@ const GoogleSuperCluster = ({
       ])
   }
 
-  const childRefCallback = element => {
+  const childRefCallback = (element, initialItems, maps) => {
     if (!element) {
       return
     }
@@ -296,7 +295,10 @@ const GoogleSuperCluster = ({
         {!isClustering && children
           ? React.Children.map(children, element => {
               return React.cloneElement(element, {
-                elementref: childRefCallback,
+                testing: true,
+                elementref: element => {
+                  childRefCallback(element, initialItems, map)
+                },
               })
             })
           : null}
@@ -309,12 +311,9 @@ const GoogleSuperCluster = ({
             if (!isClusterObject) {
               return React.cloneElement(child, {
                 testing: true,
-                elementref: childRefCallback.bind(
-                  null,
-                  child,
-                  initialItems,
-                  map
-                ),
+                elementref: child => {
+                  childRefCallback(child, initialItems, map)
+                },
               })
             }
             // clusterMarker
