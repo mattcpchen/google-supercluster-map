@@ -3,14 +3,14 @@ import { storiesOf } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
 import { multiMockHotels } from './helpers/mockData'
 import { FlightCircle } from 'pcln-icons'
-import { PointMarkerWrapper } from '../components/GSCMarkers'
+import { MapItemContainer } from '../components/GoogleSuperCluster'
 import GoogleSuperCluster from '../components/GoogleSuperCluster'
 
 storiesOf('GoogleSuperCluster', module).add('customize PointMarker', () => {
   const hotels = multiMockHotels.slice(0, 5)
   const center = { lat: hotels[0].latitude, lng: hotels[0].longitude }
   const mapChildren = hotels.map(hotel => (
-    <PointMarkerWrapper
+    <MapItemContainer
       key={`PointMarker-${hotel.latitude}-${hotel.longitude}`}
       lat={hotel.latitude}
       lng={hotel.longitude}
@@ -21,7 +21,7 @@ storiesOf('GoogleSuperCluster', module).add('customize PointMarker', () => {
         style={{ transform: 'translate(-50%, -100%)', cursor: 'pointer' }}
         onClick={action(`click on me`)}
       />
-    </PointMarkerWrapper>
+    </MapItemContainer>
   ))
 
   return (

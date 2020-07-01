@@ -1,9 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import GoogleSuperCluster from '../../GoogleSuperCluster'
-import { PointMarkerWrapper } from '../../GSCMarkers'
-import { getRandomPoint } from './_helpers'
 import { Twitter as Marker } from 'pcln-icons'
+import { getRandomPoint } from './_helpers'
+import { MapItemContainer } from '../../GoogleSuperCluster'
+import GoogleSuperCluster from '../../GoogleSuperCluster'
 
 const randomPickFromArray = (array, total) => {
   const result = []
@@ -23,8 +23,8 @@ const CityMapTaipei = ({ hotels, isZoomOut }) => {
   const offColor = '#4CAF50'
   const onColor = '#c00'
   const pointMarkerSize = 48
-  const clusterOnSize = 42
-  const clusterOffSize = 26
+  const clusterOnSize = 48
+  const clusterOffSize = 28
   const selectedPool = hotels.map(hotel => hotel.hotelID)
   const selectedIds = randomPickFromArray(selectedPool, 2) // pick 2 red birds
   const noop = () => {}
@@ -46,7 +46,7 @@ const CityMapTaipei = ({ hotels, isZoomOut }) => {
     const lng = hotel.location.longitude
     const isRed = selectedIds.indexOf(hotelId) > -1
     return (
-      <PointMarkerWrapper
+      <MapItemContainer
         key={hotelId}
         lat={lat}
         lng={lng}
@@ -63,7 +63,7 @@ const CityMapTaipei = ({ hotels, isZoomOut }) => {
           style={{ transform: 'translate(-50%, -100%)', cursor: 'pointer' }}
           onClick={noop}
         />
-      </PointMarkerWrapper>
+      </MapItemContainer>
     )
   })
 

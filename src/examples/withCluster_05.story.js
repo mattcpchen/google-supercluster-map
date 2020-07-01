@@ -3,19 +3,8 @@ import { storiesOf } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
 import { multiMockHotels } from './helpers/mockData'
 import { Twitter } from 'pcln-icons'
-import { PointMarkerWrapper } from '../components/GSCMarkers'
+import { MapItemContainer } from '../components/GoogleSuperCluster'
 import GoogleSuperCluster from '../components/GoogleSuperCluster'
-
-const generatePointMarker = (color, lat, lng) => (
-  <PointMarkerWrapper key={`PointMarker-${lat}-${lng}`} lat={lat} lng={lng}>
-    <Twitter
-      size={48}
-      color={color}
-      style={{ transform: 'translate(-50%, -100%)', cursor: 'pointer' }}
-      onClick={action(`click on me`)}
-    />
-  </PointMarkerWrapper>
-)
 
 storiesOf('GoogleSuperCluster', module).add(
   'customize callbackFn - advanced 1',
@@ -30,7 +19,7 @@ storiesOf('GoogleSuperCluster', module).add(
     const center = { lat: hotels[0].latitude, lng: hotels[0].longitude }
 
     const mapChildren = hotels.map(hotel => (
-      <PointMarkerWrapper
+      <MapItemContainer
         key={`PointMarker-${hotel.latitude}-${hotel.longitude}`}
         lat={hotel.latitude}
         lng={hotel.longitude}
@@ -45,7 +34,7 @@ storiesOf('GoogleSuperCluster', module).add(
           style={{ transform: 'translate(-50%, -100%)', cursor: 'pointer' }}
           onClick={action(`click on me`)}
         />
-      </PointMarkerWrapper>
+      </MapItemContainer>
     ))
 
     const clusterCallback = ({ clusterPoints }) => {

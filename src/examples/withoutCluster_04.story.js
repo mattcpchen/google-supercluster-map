@@ -1,23 +1,9 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { multiMockHotels } from './helpers/mockData'
-import GoogleSuperCluster from '../components/GoogleSuperCluster'
 import { Pin } from 'pcln-icons'
-
-// eslint-disable-next-line react/prop-types
-const MarkerWrapper = ({ children }) => (
-  <div
-    style={{
-      left: '0',
-      top: '0',
-      width: '0',
-      height: '0',
-      position: 'absolute',
-    }}
-  >
-    {children}
-  </div>
-)
+import { MapItemContainer } from '../components/GoogleSuperCluster'
+import GoogleSuperCluster from '../components/GoogleSuperCluster'
 
 storiesOf('GSC without Clustering Markers', module).add(
   'With several markers',
@@ -33,13 +19,13 @@ storiesOf('GSC without Clustering Markers', module).add(
       const lat = hotel.latitude
       const lng = hotel.longitude
       return (
-        <MarkerWrapper key={`${lat}-${lng}`} lat={lat} lng={lng}>
+        <MapItemContainer key={`${lat}-${lng}`} lat={lat} lng={lng}>
           <Pin
             size={48}
             color='#0071ff'
             style={{ transform: 'translate(-50%, -100%)' }}
           />
-        </MarkerWrapper>
+        </MapItemContainer>
       )
     })
 

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import GoogleMapReact from 'google-map-react'
 import useSupercluster from 'use-supercluster'
 import styled from 'styled-components'
-import generateClusterMarker from './helpers/clusterMarkerHelper'
+import SuperclusterMarker from './helpers/SuperclusterMarker'
 
 const MapWrapper = styled.div`
   height: 100%;
@@ -22,17 +22,11 @@ export const getMapBounds = (maps, coordinatesArray) => {
   return bounds
 }
 
-export const getClusters = ({
-  isClustering,
-  children,
-  bounds,
-  zoom,
-  options,
-}) => {
+export const generateClusterPoints = (isClustering, children) => {
   if (!isClustering || !children?.length) {
-    return {}
+    return []
   }
-  const points = children.map(child => {
+  return children.map(child => {
     const { lat, lng, ...moreProps } = child.props
     return {
       type: 'Feature',
@@ -47,8 +41,6 @@ export const getClusters = ({
       },
     }
   })
-
-  return useSupercluster({ points, bounds, zoom, options })
 }
 
 const GoogleSuperCluster = ({
@@ -63,8 +55,14 @@ const GoogleSuperCluster = ({
   options,
   params,
   refitOnCoordsChange,
-  ClusterComponent,
-  clusterStyle,
+  clusterComponent,
+  clusterStyle: clusterResetStyle,
+  clusterRadius,
+  clusterSize,
+  clusterColor,
+  clusterGlowing,
+  clusterTitleSize,
+  clusterSubtitleSize,
   clusterCallback,
 }) => {
   const [bounds, setBounds] = useState(null)
@@ -110,15 +108,12 @@ const GoogleSuperCluster = ({
   }, [params])
 
   // clusters && supercluster
-  const { clusters, supercluster } = getClusters({
-    isClustering,
-    children,
+  const points = generateClusterPoints(isClustering, children)
+  const { supercluster, clusters } = useSupercluster({
+    points,
     bounds,
     zoom,
-    options: {
-      radius: 75,
-      maxZoom: defaultZoom,
-    },
+    options: { radius: clusterRadius, maxZoom: defaultZoom },
   })
 
   // Google Map
@@ -152,9 +147,33 @@ const GoogleSuperCluster = ({
     }
   }
 
-  const handleClusterMapChanged = (zoom, bounds) => {
-    setZoom(zoom)
-    setBounds([bounds.nw.lng, bounds.se.lat, bounds.se.lng, bounds.nw.lat])
+  const handleClusterMapChanged = (isClustering, inZoom, inBounds) => {
+    if (!isClustering || !inZoom || !inBounds) {
+      return
+    }
+    const isZoomUpdated = !zoom || zoom !== inZoom
+    const inFlattenBounds = [
+      inBounds.nw.lng,
+      inBounds.se.lat,
+      inBounds.se.lng,
+      inBounds.nw.lat,
+    ]
+    const isBoundsUpdated =
+      !bounds ||
+      bounds.length !== inFlattenBounds.length ||
+      bounds.reduce((acc, bound, index) => {
+        return acc || bound !== inFlattenBounds[index]
+      }, false)
+
+    // avoid making any unnecessary setState calls
+    isZoomUpdated && setZoom(inZoom)
+    isBoundsUpdated &&
+      setBounds([
+        inBounds.nw.lng,
+        inBounds.se.lat,
+        inBounds.se.lng,
+        inBounds.nw.lat,
+      ])
   }
 
   const childRefCallback = element => {
@@ -183,7 +202,9 @@ const GoogleSuperCluster = ({
         options={handleMapOption}
         yesIWantToUseGoogleMapApiInternals
         zoom={initZoom}
-        onChange={({ zoom, bounds }) => handleClusterMapChanged(zoom, bounds)}
+        onChange={({ zoom, bounds }) =>
+          handleClusterMapChanged(isClustering, zoom, bounds)
+        }
       >
         {!isClustering && children
           ? React.Children.map(children, element => {
@@ -198,12 +219,20 @@ const GoogleSuperCluster = ({
           clusters.map(cluster => {
             const [lng, lat] = cluster.geometry.coordinates
             const { PointMarker, cluster: isCluster } = cluster.properties
+            const clusterStyle = {
+              size: clusterSize,
+              color: clusterColor,
+              glowing: clusterGlowing,
+              titleSize: clusterTitleSize,
+              subtitleSize: clusterSubtitleSize,
+              ...clusterResetStyle,
+            }
             return isCluster
-              ? generateClusterMarker({
+              ? SuperclusterMarker({
                   mapRef,
                   supercluster,
                   cluster,
-                  ClusterComponent,
+                  clusterComponent,
                   clusterStyle,
                   clusterCallback,
                   defaultZoom,
@@ -237,18 +266,27 @@ GoogleSuperCluster.propTypes = {
   options: PropTypes.object,
   params: PropTypes.object,
   refitOnCoordsChange: PropTypes.bool,
-  ClusterComponent: PropTypes.object,
+  clusterComponent: PropTypes.object,
   clusterStyle: PropTypes.shape({
-    bgColor: PropTypes.string,
-    bgSize: PropTypes.number,
+    size: PropTypes.number,
+    color: PropTypes.string,
+    glowing: PropTypes.string,
     titleSize: PropTypes.number,
     subtitleSize: PropTypes.number,
   }),
+  clusterRadius: PropTypes.number,
+  clusterSize: PropTypes.number,
+  clusterColor: PropTypes.string,
+  clusterGlowing: PropTypes.string,
+  clusterTitleSize: PropTypes.number,
+  clusterSubtitleSize: PropTypes.number,
   clusterCallback: PropTypes.func,
 }
 
 GoogleSuperCluster.defaultProps = {
   isClustering: false,
+  PclnGMApiKey: 'AIzaSyCBc99VuJdxwj5E9VQyo0dhD4YZRU_edOM',
+  GMApiKey: 'AIzaSyD2Zt3b8xGZVVqu3751QhKlm93v3FasoL8',
   defaultCenter: {
     lat: 0,
     lng: 180,
@@ -256,8 +294,12 @@ GoogleSuperCluster.defaultProps = {
   defaultZoom: 14,
   params: {},
   refitOnCoordsChange: false,
-  PclnGMApiKey: 'AIzaSyCBc99VuJdxwj5E9VQyo0dhD4YZRU_edOM',
-  GMApiKey: 'AIzaSyD2Zt3b8xGZVVqu3751QhKlm93v3FasoL8',
+  clusterRadius: 75,
+  clusterSize: 38,
+  clusterColor: '#007aff',
+  clusterGlowing: '',
+  clusterTitleSize: 12,
+  clusterSubtitleSize: 8,
 }
 
 export default GoogleSuperCluster
