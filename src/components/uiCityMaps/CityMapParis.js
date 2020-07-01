@@ -2,8 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { getRandomPoint } from './_helpers'
 import { User as Marker } from 'pcln-icons'
-import { MapItemContainer } from '../../GoogleSuperCluster'
-import GoogleSuperCluster from '../../GoogleSuperCluster'
+import GoogleSuperCluster, { MapItemContainer } from '../GoogleSuperCluster'
 
 const getRandomRGBColor = () => {
   const rgb = Math.floor(Math.random() * 3)

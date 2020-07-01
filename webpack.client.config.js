@@ -1,37 +1,43 @@
-const path = require('path');
-const webpack = require('webpack');
+const path = require('path')
+const webpack = require('webpack')
 
 module.exports = {
-  mode:'development',
-  entry : './src/client/index.js',
-  output : {
-    path : path.resolve(__dirname , './dist'),
+  mode: 'development',
+  entry: './src/client/index.js',
+  output: {
+    path: path.resolve(__dirname, './dist'),
     filename: 'bundle.js',
-    publicPath: '/'
+    publicPath: '/',
   },
-  module : {
-    rules : [
+  module: {
+    rules: [
       {
-        test : /\.(js)$/,
+        test: /\.(js)$/,
         exclude: /node_modules/,
-        use:'babel-loader'
-      }
-    ]
+        use: 'babel-loader',
+      },
+      {
+        test: /\.(jpg|jpeg|png)$/,
+        use: {
+          loader: 'url-loader',
+        },
+      },
+    ],
   },
-  plugins : [
+  plugins: [
     new webpack.HotModuleReplacementPlugin()
   ],
   devServer: {
-    contentBase: "./public",
+    contentBase: './public',
     colors: true,
     hot: true,
     headers: {
-      'Access-Control-Allow-Origin': '*'
+      'Access-Control-Allow-Origin': '*',
     },
     historyApiFallback: true,
-    inline: true
+    inline: true,
   },
   optimization: {
-    nodeEnv: false
-  }
-};
+    nodeEnv: false,
+  },
+}

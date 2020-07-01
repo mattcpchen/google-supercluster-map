@@ -4,6 +4,7 @@ import GoogleMapReact from 'google-map-react'
 import useSupercluster from 'use-supercluster'
 import styled from 'styled-components'
 import SuperclusterMarker from './helpers/SuperclusterMarker'
+import { flattenClusterData } from './helpers/clusterHelpers'
 
 const MapWrapper = styled.div`
   height: 100%;
@@ -20,6 +21,78 @@ export const getMapBounds = (maps, coordinatesArray) => {
     bounds.extend(new maps.LatLng(latLng.lat, latLng.lng))
   }
   return bounds
+}
+
+export const splitClusterChildren = (isClustering, children) => {
+  const pointChildren = []
+  const clusterChildren = []
+  if (!isClustering || !children?.length) {
+    return { pointChildren, clusterChildren }
+  }
+  children.forEach(child => {
+    if (child?.props?.isExcluded) {
+      pointChildren.push(child)
+    } else {
+      clusterChildren.push(child)
+    }
+  })
+  return { pointChildren, clusterChildren }
+}
+
+export const mergeClusterChildren = (
+  isClustering,
+  supercluster,
+  clusters,
+  pointChildren
+) => {
+  if (!isClustering) {
+    return []
+  }
+  // update cluster with clusterPoints
+  clusters.forEach(cluster => {
+    const isCluster = cluster?.properties?.cluster
+    if (isCluster) {
+      cluster.points = flattenClusterData(supercluster, cluster)
+    }
+  })
+  // return clusters ONLY
+  if (pointChildren && pointChildren.length === 0) {
+    return clusters
+  }
+
+  // mix clusters && pointChildren
+  let isIndexMissing = false
+  const mixChildren = []
+
+  clusters.forEach(cluster => {
+    let thisKeyIndex = -1
+    if (cluster.points) {
+      thisKeyIndex = cluster.points.reduce((acc, point) => {
+        const keyIndex = point.keyIndex || -1
+        return acc === null ? keyIndex : Math.max(acc, keyIndex)
+      }, null)
+    } else {
+      thisKeyIndex = cluster?.properties?.keyIndex ?? -1
+    }
+    isIndexMissing = thisKeyIndex === -1 ? true : isIndexMissing
+    if (thisKeyIndex !== -1) {
+      mixChildren[thisKeyIndex] = cluster
+    }
+  })
+
+  pointChildren.forEach(child => {
+    const thisKeyIndex = child?.props?.keyIndex ?? -1
+    isIndexMissing = thisKeyIndex === -1 ? true : isIndexMissing
+    if (thisKeyIndex !== -1) {
+      mixChildren[thisKeyIndex] = child
+    }
+  })
+
+  if (isIndexMissing) {
+    return [...clusters, ...pointChildren]
+  } else {
+    return mixChildren.filter(child => child !== undefined)
+  }
 }
 
 export const generateClusterPoints = (isClustering, children) => {
@@ -62,7 +135,9 @@ const GoogleSuperCluster = ({
   clusterColor,
   clusterGlowing,
   clusterTitleSize,
+  clusterTitleBold,
   clusterSubtitleSize,
+  clusterSubtitleBold,
   clusterCallback,
 }) => {
   const [bounds, setBounds] = useState(null)
@@ -105,16 +180,27 @@ const GoogleSuperCluster = ({
         map.fitBounds(bounds)
       }
     }
-  }, [params])
+  }, [params, prevParams, refitOnCoordsChange, maps, map])
 
   // clusters && supercluster
-  const points = generateClusterPoints(isClustering, children)
+  const { pointChildren, clusterChildren } = splitClusterChildren(
+    isClustering,
+    children
+  )
+  const points = generateClusterPoints(isClustering, clusterChildren)
   const { supercluster, clusters } = useSupercluster({
     points,
     bounds,
     zoom,
     options: { radius: clusterRadius, maxZoom: defaultZoom },
   })
+  // const clusterPoints = flattenClusterData(supercluster, cluster)
+  const mixedChildren = mergeClusterChildren(
+    isClustering,
+    supercluster,
+    clusters,
+    pointChildren
+  )
 
   // Google Map
   const handleApiLoaded = (inMap, inMaps, params) => {
@@ -176,7 +262,7 @@ const GoogleSuperCluster = ({
       ])
   }
 
-  const childRefCallback = element => {
+  const childRefCallback = (element, initialItems, maps) => {
     if (!element) {
       return
     }
@@ -209,14 +295,29 @@ const GoogleSuperCluster = ({
         {!isClustering && children
           ? React.Children.map(children, element => {
               return React.cloneElement(element, {
-                elementref: childRefCallback,
+                testing: true,
+                elementref: element => {
+                  childRefCallback(element, initialItems, map)
+                },
               })
             })
           : null}
 
         {isClustering &&
-          clusters &&
-          clusters.map(cluster => {
+          mixedChildren &&
+          mixedChildren.map(child => {
+            const isClusterObject = child.type && child.type === 'Feature'
+            // fixedMarker
+            if (!isClusterObject) {
+              return React.cloneElement(child, {
+                testing: true,
+                elementref: child => {
+                  childRefCallback(child, initialItems, map)
+                },
+              })
+            }
+            // clusterMarker
+            const cluster = child
             const [lng, lat] = cluster.geometry.coordinates
             const { PointMarker, cluster: isCluster } = cluster.properties
             const clusterStyle = {
@@ -224,7 +325,9 @@ const GoogleSuperCluster = ({
               color: clusterColor,
               glowing: clusterGlowing,
               titleSize: clusterTitleSize,
+              titleBold: clusterTitleBold,
               subtitleSize: clusterSubtitleSize,
+              subtitleBold: clusterSubtitleBold,
               ...clusterResetStyle,
             }
             return isCluster
@@ -279,7 +382,9 @@ GoogleSuperCluster.propTypes = {
   clusterColor: PropTypes.string,
   clusterGlowing: PropTypes.string,
   clusterTitleSize: PropTypes.number,
+  clusterTitleBold: PropTypes.bool,
   clusterSubtitleSize: PropTypes.number,
+  clusterSubtitleBold: PropTypes.bool,
   clusterCallback: PropTypes.func,
 }
 
@@ -299,7 +404,9 @@ GoogleSuperCluster.defaultProps = {
   clusterColor: '#007aff',
   clusterGlowing: '',
   clusterTitleSize: 12,
+  clusterTitleBold: true,
   clusterSubtitleSize: 8,
+  clusterSubtitleBold: false,
 }
 
 export default GoogleSuperCluster

@@ -8,7 +8,7 @@ import { CircleClusterMarker } from '../components/clusterMarkers'
 import { MapItemContainer } from '../components/GoogleSuperCluster'
 import GoogleSuperCluster from '../components/GoogleSuperCluster'
 
-storiesOf('GoogleSuperCluster', module).add(
+storiesOf('GSC with clustering', module).add(
   'customize callbackFn - basic',
   () => {
     const StyledClusterMarker = styled(CircleClusterMarker)`

@@ -1,9 +1,19 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import styled from 'styled-components'
 import { HotelCircle, Discount } from 'pcln-icons'
+import { Image } from 'pcln-design-system'
+import tsImageSrc from './images/times_square.jpg'
 import { getRandomPoint } from './_helpers'
-import { MapItemContainer } from '../../GoogleSuperCluster'
-import GoogleSuperCluster from '../../GoogleSuperCluster'
+import GoogleSuperCluster, { MapItemContainer } from '../GoogleSuperCluster'
+
+const StyledTSMarker = styled(Image)`
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 5px;
+  box-shadow: 0px 0px 3px 3px #fff;
+`
 
 const findTotalMinPrice = hotels => {
   let minPrice = Number.MAX_VALUE
@@ -26,6 +36,7 @@ const CityMapNYC = ({ hotels, isZoomOut }) => {
   const normalColor = '#007aff'
   const normalGlowing = '0 0 1px 1px #ffffff'
   const cheapColor = '#c00'
+  const excludedColor = '#c00'
   const cheapGlowing = `0 0 1px 2px #c00`
   const pointMarkerSize = 48
   const clusterOffSize = 48
@@ -42,7 +53,30 @@ const CityMapNYC = ({ hotels, isZoomOut }) => {
 
   // for children
   const totalMinPrice = findTotalMinPrice(hotels)
-  const mapChildren = hotels.map(hotel => {
+  const generateTSChild = keyIndex => (
+    <MapItemContainer
+      key={`Times Square`}
+      keyIndex={keyIndex}
+      isExcluded
+      lat={40.758896}
+      lng={-73.98513}
+    >
+      <StyledTSMarker
+        src={tsImageSrc}
+        size={pointMarkerSize}
+        color={excludedColor}
+        style={{ transform: 'translate(-50%, -100%)' }}
+      />
+    </MapItemContainer>
+  )
+
+  // add Times Square in hotels
+  const tsHotelIndex = Math.floor(Math.random() * (hotels.length + 1))
+  hotels.splice(tsHotelIndex, 0, { isTimesSquare: true })
+  const mapChildren = hotels.map((hotel, index) => {
+    if (hotel.isTimesSquare) {
+      return generateTSChild(index)
+    }
     const currencySymbol = hotel.ratesSummary.minCurrencyCodeSymbol
     const hotelPrice = Math.floor(hotel.ratesSummary.minPrice)
     const lat = hotel.location.latitude
@@ -54,6 +88,7 @@ const CityMapNYC = ({ hotels, isZoomOut }) => {
         key={hotel.hotelID}
         lat={lat}
         lng={lng}
+        keyIndex={index}
         hotelId={hotel.hotelID}
         hotelName={hotel.name}
         currencySymbol={currencySymbol}

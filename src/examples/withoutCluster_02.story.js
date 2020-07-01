@@ -33,32 +33,29 @@ const renderZone = (maps, zoneCoords) => {
   })
 }
 
-storiesOf('GSC without Clustering Markers', module).add(
-  'PolygonZone only',
-  () => {
-    const mapCallbackFn = (map, maps) => {
-      const { zoneCoords } = hotelData
-      const polygonZone = renderZone(maps, zoneCoords)
-      polygonZone.setMap(map)
-    }
-
-    const props = {
-      elementId: 'google-maps-2',
-      mapCallbackFn,
-      defaultCenter: {
-        lat: 40.760769,
-        lng: -73.984417,
-      },
-      defaultZoom: 14,
-      options: {
-        disableDefaultUI: true,
-      },
-    }
-
-    return (
-      <div style={{ height: '500px' }}>
-        <GoogleSuperCluster {...props} />
-      </div>
-    )
+storiesOf('GSC without clustering', module).add('PolygonZone only', () => {
+  const mapCallbackFn = (map, maps) => {
+    const { zoneCoords } = hotelData
+    const polygonZone = renderZone(maps, zoneCoords)
+    polygonZone.setMap(map)
   }
-)
+
+  const props = {
+    elementId: 'google-maps-2',
+    mapCallbackFn,
+    defaultCenter: {
+      lat: 40.760769,
+      lng: -73.984417,
+    },
+    defaultZoom: 14,
+    options: {
+      disableDefaultUI: true,
+    },
+  }
+
+  return (
+    <div style={{ height: '500px' }}>
+      <GoogleSuperCluster {...props} />
+    </div>
+  )
+})

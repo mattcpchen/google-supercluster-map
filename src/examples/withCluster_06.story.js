@@ -6,7 +6,7 @@ import { HotelCircle, Discount } from 'pcln-icons'
 import { MapItemContainer } from '../components/GoogleSuperCluster'
 import GoogleSuperCluster from '../components/GoogleSuperCluster'
 
-storiesOf('GoogleSuperCluster', module).add(
+storiesOf('GSC with clustering', module).add(
   'customize callbackFn - advanced 2',
   () => {
     /** this will utilize the value / maxValue / minValue features */

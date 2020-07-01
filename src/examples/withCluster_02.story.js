@@ -6,7 +6,7 @@ import { FlightCircle } from 'pcln-icons'
 import { MapItemContainer } from '../components/GoogleSuperCluster'
 import GoogleSuperCluster from '../components/GoogleSuperCluster'
 
-storiesOf('GoogleSuperCluster', module).add('customize PointMarker', () => {
+storiesOf('GSC with clustering', module).add('customize PointMarker', () => {
   const hotels = multiMockHotels.slice(0, 5)
   const center = { lat: hotels[0].latitude, lng: hotels[0].longitude }
   const mapChildren = hotels.map(hotel => (

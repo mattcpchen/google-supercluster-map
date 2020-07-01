@@ -6,7 +6,7 @@ import { Twitter } from 'pcln-icons'
 import { MapItemContainer } from '../components/GoogleSuperCluster'
 import GoogleSuperCluster from '../components/GoogleSuperCluster'
 
-storiesOf('GoogleSuperCluster', module).add(
+storiesOf('GSC with clustering', module).add(
   'customize callbackFn - advanced 1',
   () => {
     /** this will utilize the value for selected */
