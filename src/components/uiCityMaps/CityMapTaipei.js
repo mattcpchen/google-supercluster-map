@@ -2,8 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Twitter as Marker } from 'pcln-icons'
 import { getRandomPoint } from './_helpers'
-import { MapItemContainer } from '../../GoogleSuperCluster'
-import GoogleSuperCluster from '../../GoogleSuperCluster'
+import GoogleSuperCluster, { MapItemContainer } from '../GoogleSuperCluster'
 
 const randomPickFromArray = (array, total) => {
   const result = []

@@ -5,8 +5,7 @@ import { HotelCircle, Discount } from 'pcln-icons'
 import { Image } from 'pcln-design-system'
 import tsImageSrc from './images/times_square.jpg'
 import { getRandomPoint } from './_helpers'
-import { MapItemContainer } from '../../GoogleSuperCluster'
-import GoogleSuperCluster from '../../GoogleSuperCluster'
+import GoogleSuperCluster, { MapItemContainer } from '../GoogleSuperCluster'
 
 const StyledTSMarker = styled(Image)`
   width: 50px;
