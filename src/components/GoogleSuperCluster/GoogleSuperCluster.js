@@ -277,7 +277,7 @@ const GoogleSuperCluster = ({
     <MapWrapper className={className}>
       <GoogleMapReact
         bootstrapURLKeys={{
-          key: `AIzaSyD2Zt3b8xGZVVqu3751QhKlm93v3FasoL8`, // <YOUR-OWN-API-KEY> here
+          key: `AIzaSyCBc99VuJdxwj5E9VQyo0dhD4YZRU_edOM`, // <YOUR-OWN-API-KEY> here
         }}
         center={center}
         defaultCenter={defaultCenter}
