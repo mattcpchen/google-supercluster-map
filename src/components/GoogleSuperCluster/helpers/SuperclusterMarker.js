@@ -49,7 +49,9 @@ const SuperclusterMarker = ({
   const clusterTitle = clusterData.clusterTitle ?? clusterPoints.length
   const clusterSubtitle = clusterData.clusterSubtitle ?? ''
   const titleSize = clusterData.titleSize ?? clusterStyle.titleSize
+  const titleBold = clusterData.titleBold ?? clusterStyle.titleBold
   const subtitleSize = clusterData.subtitleSize ?? clusterStyle.subtitleSize
+  const subtitleBold = clusterData.subtitleBold ?? clusterStyle.subtitleBold
   return (
     <MapItemContainer key={`ClusterMarker-${cluster.id}`} lat={lat} lng={lng}>
       <Marker
@@ -69,11 +71,11 @@ const SuperclusterMarker = ({
         }}
       >
         <DescriptionContainer textAlign='center' width={1}>
-          <Text bold fontSize={`${titleSize}px`}>
+          <Text bold={titleBold} fontSize={`${titleSize}px`}>
             {clusterTitle}
           </Text>
           {clusterSubtitle && (
-            <WrapText fontSize={`${subtitleSize}px`} mt={1}>
+            <WrapText bold={subtitleBold} fontSize={`${subtitleSize}px`} mt={1}>
               {clusterSubtitle}
             </WrapText>
           )}
@@ -88,6 +90,10 @@ SuperclusterMarker.propTypes = {
     PropTypes.func,
     PropTypes.shape({ current: PropTypes.any }),
   ]),
+  lat: PropTypes.number,
+  lng: PropTypes.number,
+  defaultZoom: PropTypes.number,
+  totalPointsCount: PropTypes.number,
   supercluster: PropTypes.any,
   cluster: PropTypes.object,
   clusterComponent: PropTypes.object,
@@ -96,13 +102,11 @@ SuperclusterMarker.propTypes = {
     color: PropTypes.string,
     glowing: PropTypes.string,
     titleSize: PropTypes.number,
+    titleBold: PropTypes.bool,
     subtitleSize: PropTypes.number,
+    subtitleBold: PropTypes.bool,
   }),
   clusterCallback: PropTypes.func,
-  defaultZoom: PropTypes.number,
-  lat: PropTypes.number,
-  lng: PropTypes.number,
-  totalPointsCount: PropTypes.number,
 }
 
 export default SuperclusterMarker

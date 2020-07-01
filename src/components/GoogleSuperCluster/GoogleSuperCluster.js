@@ -62,7 +62,9 @@ const GoogleSuperCluster = ({
   clusterColor,
   clusterGlowing,
   clusterTitleSize,
+  clusterTitleBold,
   clusterSubtitleSize,
+  clusterSubtitleBold,
   clusterCallback,
 }) => {
   const [bounds, setBounds] = useState(null)
@@ -224,7 +226,9 @@ const GoogleSuperCluster = ({
               color: clusterColor,
               glowing: clusterGlowing,
               titleSize: clusterTitleSize,
+              titleBold: clusterTitleBold,
               subtitleSize: clusterSubtitleSize,
+              subtitleBold: clusterSubtitleBold,
               ...clusterResetStyle,
             }
             return isCluster
@@ -279,7 +283,9 @@ GoogleSuperCluster.propTypes = {
   clusterColor: PropTypes.string,
   clusterGlowing: PropTypes.string,
   clusterTitleSize: PropTypes.number,
+  clusterTitleBold: PropTypes.bool,
   clusterSubtitleSize: PropTypes.number,
+  clusterSubtitleBold: PropTypes.bool,
   clusterCallback: PropTypes.func,
 }
 
@@ -299,7 +305,9 @@ GoogleSuperCluster.defaultProps = {
   clusterColor: '#007aff',
   clusterGlowing: '',
   clusterTitleSize: 12,
+  clusterTitleBold: true,
   clusterSubtitleSize: 8,
+  clusterSubtitleBold: false,
 }
 
 export default GoogleSuperCluster
