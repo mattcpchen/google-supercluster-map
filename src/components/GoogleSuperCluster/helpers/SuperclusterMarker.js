@@ -12,20 +12,6 @@ const WrapText = styled(Text)`
   overflow-wrap: break-word;
 `
 
-const flattenClusterData = (supercluster, cluster) => {
-  const children = supercluster.getChildren(cluster.id)
-  const result = []
-  children.forEach(child => {
-    if (child.id) {
-      const properties = flattenClusterData(supercluster, child)
-      result.push(...properties)
-    } else {
-      result.push(child.properties)
-    }
-  })
-  return result
-}
-
 const SuperclusterMarker = ({
   mapRef,
   supercluster,
@@ -39,7 +25,7 @@ const SuperclusterMarker = ({
   totalPointsCount,
 }) => {
   const Marker = clusterComponent || DefaultClusterComponent
-  const clusterPoints = flattenClusterData(supercluster, cluster)
+  const clusterPoints = cluster.points
   const clusterData = clusterCallback
     ? clusterCallback({ totalPointsCount, clusterPoints })
     : {}

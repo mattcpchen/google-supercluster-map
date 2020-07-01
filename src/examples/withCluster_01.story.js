@@ -5,7 +5,7 @@ import { Pin } from 'pcln-icons'
 import { MapItemContainer } from '../components/GoogleSuperCluster'
 import GoogleSuperCluster from '../components/GoogleSuperCluster'
 
-storiesOf('GoogleSuperCluster', module).add('default setting', () => {
+storiesOf('GSC with clustering', module).add('default setting', () => {
   const hotels = multiMockHotels
 
   const defaultCenter = {

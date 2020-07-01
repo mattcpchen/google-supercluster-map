@@ -8,7 +8,7 @@ import ClusterMarker from '../components/clusterMarkers'
 import { MapItemContainer } from '../components/GoogleSuperCluster'
 import GoogleSuperCluster from '../components/GoogleSuperCluster'
 
-storiesOf('GoogleSuperCluster', module).add('customize ClusterMarker', () => {
+storiesOf('GSC with clustering', module).add('customize ClusterMarker', () => {
   const hotels = multiMockHotels
 
   const center = {
