@@ -12,7 +12,7 @@ Demo can be seen [HERE](https://google-supercluster-map.herokuapp.com/).
 ### Sneak peek:
 Some screenshots from this project:
 ![readme_01](/public/doc/readme_01.jpg?raw=true)
-![readme_02](/public/doc/readme_02.jpg?raw=true)
+![readme_02](/public/doc/readme_02b.jpg?raw=true)
 ![readme_03](/public/doc/readme_03.jpg?raw=true)
 ![readme_04](/public/doc/readme_04.jpg?raw=true)
 
